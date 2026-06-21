@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>三年級期末模擬考 - 麥塊打怪版</title>
+<title>三年級期末模擬考 - 麥塊迷宮探險</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
@@ -27,319 +27,228 @@
     color:#fff;
     min-height:100vh;
     overflow-x:hidden;
-    image-rendering:pixelated;
   }
   body{padding-bottom:24px;}
 
-  /* ── Pixel border utility (4-sided beveled block look) ── */
   .pixel-frame{
     border:4px solid var(--wood-dark);
-    box-shadow:
-      inset 3px 3px 0 rgba(255,255,255,.15),
-      inset -3px -3px 0 rgba(0,0,0,.35);
+    box-shadow:inset 3px 3px 0 rgba(255,255,255,.15), inset -3px -3px 0 rgba(0,0,0,.35);
     border-radius:2px;
   }
 
   /* ── HEADER ── */
   .header{
     background:linear-gradient(180deg,#3A6BA8 0%,#5C9E31 60%,#447522 100%);
-    padding:20px 14px 22px;
-    text-align:center;
-    position:relative;
-    border-bottom:5px solid var(--wood-dark);
-    overflow:hidden;
+    padding:18px 14px 20px;text-align:center;position:relative;
+    border-bottom:5px solid var(--wood-dark);overflow:hidden;
   }
   .header::before{
-    content:'';
-    position:absolute; inset:0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    content:'';position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-    background-size:16px 16px;
-    pointer-events:none;
+    background-size:16px 16px;pointer-events:none;
   }
   .header h1{
-    font-family:var(--pixel-font);
-    font-size:15px;
-    color:#fff;
-    text-shadow:2px 2px 0 #2D5016, -1px -1px 0 #2D5016, 1px -1px 0 #2D5016, -1px 1px 0 #2D5016;
-    letter-spacing:1px;
-    line-height:1.6;
-    position:relative; z-index:1;
+    font-family:var(--pixel-font);font-size:14px;color:#fff;
+    text-shadow:2px 2px 0 #2D5016,-1px -1px 0 #2D5016,1px -1px 0 #2D5016,-1px 1px 0 #2D5016;
+    letter-spacing:1px;line-height:1.6;position:relative;z-index:1;
   }
-  .header p{
-    font-size:12px;
-    color:#FFF9E0;
-    margin-top:8px;
-    font-weight:700;
-    position:relative; z-index:1;
-  }
-  .header-disclaimer{
-    font-size:10px!important;
-    color:rgba(255,255,255,.65)!important;
-    font-weight:400!important;
-    margin-top:4px!important;
-  }
+  .header p{font-size:11px;color:#FFF9E0;margin-top:6px;font-weight:700;position:relative;z-index:1;}
+  .header-disclaimer{font-size:9px!important;color:rgba(255,255,255,.65)!important;font-weight:400!important;margin-top:4px!important;}
   .sound-toggle{
-    position:absolute;
-    top:12px; right:12px;
-    z-index:2;
-    width:38px; height:38px;
-    border:3px solid var(--wood-dark);
-    border-radius:2px;
-    background:rgba(0,0,0,.35);
-    color:#fff;
-    font-size:17px;
-    cursor:pointer;
+    position:absolute;top:10px;right:10px;z-index:2;
+    width:36px;height:36px;border:3px solid var(--wood-dark);border-radius:2px;
+    background:rgba(0,0,0,.35);color:#fff;font-size:16px;cursor:pointer;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:inset 2px 2px 0 rgba(255,255,255,.15), inset -2px -2px 0 rgba(0,0,0,.3);
-    transition:all .1s;
+    box-shadow:inset 2px 2px 0 rgba(255,255,255,.15),inset -2px -2px 0 rgba(0,0,0,.3);
   }
   .sound-toggle:active{transform:translateY(1px);}
 
-  .container{padding:14px;max-width:520px;margin:0 auto;}
   .hidden{display:none!important;}
 
-  /* ── CARD (parchment / crafting-table feel) ── */
-  .card{
-    background:var(--paper);
-    color:#3D2817;
-    border-radius:4px;
-    padding:22px 18px;
-    margin-top:14px;
-  }
-  .card.pixel-frame{border-color:var(--wood-dark);}
-
-  .setup-icon{font-size:44px;text-align:center;margin-bottom:8px;}
-  .card h2{
-    font-family:var(--pixel-font);
-    font-size:14px;
-    text-align:center;
-    margin-bottom:10px;
-    color:var(--wood-dark);
-    line-height:1.6;
-  }
+  /* ── SETUP SCREEN ── */
+  .setup-wrap{padding:14px;max-width:480px;margin:0 auto;}
+  .card{background:var(--paper);color:#3D2817;border-radius:4px;padding:22px 18px;margin-top:14px;}
+  .setup-icon{font-size:42px;text-align:center;margin-bottom:8px;}
+  .card h2{font-family:var(--pixel-font);font-size:13px;text-align:center;margin-bottom:10px;color:var(--wood-dark);line-height:1.7;}
   .card .sub{font-size:13px;color:#5C4A33;text-align:center;margin-bottom:18px;line-height:1.6;}
-
-  .field-label{
-    font-family:var(--pixel-font);
-    font-size:10px;
-    margin:18px 0 9px;
-    color:var(--wood-dark);
-    display:flex;align-items:center;gap:6px;
-  }
-
+  .field-label{font-family:var(--pixel-font);font-size:9px;margin:16px 0 8px;color:var(--wood-dark);display:flex;align-items:center;gap:6px;}
   .pill-row{display:flex;gap:8px;flex-wrap:wrap;}
   .pill{
-    flex:1;min-width:60px;padding:11px 8px;
-    border:3px solid var(--dirt-dark);
-    background:var(--dirt);
-    font-size:13px;font-weight:700;font-family:var(--body-font);
-    cursor:pointer;color:#fff;transition:all .1s;text-align:center;
-    box-shadow:inset 2px 2px 0 rgba(255,255,255,.2), inset -2px -2px 0 rgba(0,0,0,.3);
-    border-radius:2px;
+    flex:1;min-width:56px;padding:11px 6px;border:3px solid var(--dirt-dark);
+    background:var(--dirt);font-size:12px;font-weight:700;font-family:var(--body-font);
+    cursor:pointer;color:#fff;text-align:center;border-radius:2px;
+    box-shadow:inset 2px 2px 0 rgba(255,255,255,.2),inset -2px -2px 0 rgba(0,0,0,.3);
   }
   .pill:active{transform:translateY(1px);box-shadow:none;}
   .pill.active{background:var(--emerald);border-color:#2B7A42;}
-
   .player-name-list{display:flex;flex-direction:column;gap:9px;margin-top:8px;}
   .player-name-row{display:flex;align-items:center;gap:10px;}
   .player-token{
-    width:34px;height:34px;flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-    font-size:18px;border:3px solid var(--wood-dark);border-radius:2px;
-    box-shadow:inset 2px 2px 0 rgba(255,255,255,.25), inset -2px -2px 0 rgba(0,0,0,.3);
+    width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-size:17px;border:3px solid var(--wood-dark);border-radius:2px;
+    box-shadow:inset 2px 2px 0 rgba(255,255,255,.25),inset -2px -2px 0 rgba(0,0,0,.3);
   }
   .player-name-input{
-    flex:1;padding:10px 12px;
-    border:3px solid var(--dirt-dark);border-radius:2px;
-    font-size:14px;font-family:var(--body-font);outline:none;
-    background:#fff;
+    flex:1;padding:10px 12px;border:3px solid var(--dirt-dark);border-radius:2px;
+    font-size:14px;font-family:var(--body-font);outline:none;background:#fff;
   }
   .player-name-input:focus{border-color:var(--emerald);}
-
   .btn-primary{
-    width:100%;padding:16px;
-    border:4px solid #2B7A42;border-radius:2px;
-    background:var(--emerald);color:#fff;
-    font-size:14px;font-weight:900;font-family:var(--pixel-font);
-    cursor:pointer;letter-spacing:1px;margin-top:24px;
-    box-shadow:inset 3px 3px 0 rgba(255,255,255,.25), inset -3px -3px 0 rgba(0,0,0,.3);
-    transition:all .1s;
+    width:100%;padding:15px;border:4px solid #2B7A42;border-radius:2px;
+    background:var(--emerald);color:#fff;font-size:13px;font-weight:900;
+    font-family:var(--pixel-font);cursor:pointer;letter-spacing:1px;margin-top:22px;
+    box-shadow:inset 3px 3px 0 rgba(255,255,255,.25),inset -3px -3px 0 rgba(0,0,0,.3);
   }
   .btn-primary:active{transform:translateY(2px);box-shadow:none;}
 
-  /* ── GAME SCREEN ── */
-  .game-top{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
-    gap:8px;
-    margin-bottom:10px;
+  /* ── GAME LAYOUT: sidebar + maze ── */
+  .game-wrap{
+    display:flex;gap:10px;padding:10px;max-width:760px;margin:0 auto;
+    align-items:flex-start;flex-wrap:wrap;
   }
-  .player-chip{
-    display:flex;flex-direction:column;align-items:flex-start;gap:4px;
-    background:var(--obsidian-light);border-radius:2px;padding:7px 10px;
-    border:3px solid #443D6B;font-size:11px;font-weight:700;color:#fff;
-    min-width:0;
-  }
-  .player-chip.current{border-color:var(--gold);background:#3A3458;}
-  .player-chip .chip-top{display:flex;align-items:center;gap:7px;width:100%;}
-  .player-chip .tok{
-    width:24px;height:24px;display:flex;align-items:center;justify-content:center;
-    font-size:13px;flex-shrink:0;border:2px solid rgba(255,255,255,.3);border-radius:2px;
-  }
-  .player-chip .pname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;}
-  .player-chip .chip-bottom{display:flex;align-items:center;justify-content:space-between;width:100%;gap:6px;}
-  .player-chip .hearts{color:var(--redstone);font-size:11px;letter-spacing:-1px;white-space:nowrap;}
-  .player-chip .xp{color:var(--gold);font-weight:700;font-size:10px;white-space:nowrap;}
-
-  .round-banner{
-    text-align:center;font-family:var(--pixel-font);font-size:9px;
-    color:var(--gold); margin-bottom:10px; letter-spacing:1px;
-  }
-
-  /* Board: pixel block grid */
-  .board-wrap{
+  .scoreboard{
+    flex:0 0 auto;
+    width:150px;
+    display:flex;flex-direction:column;gap:8px;
     background:var(--obsidian-light);
-    border:4px solid var(--wood-dark);
-    border-radius:2px;
+    border:4px solid var(--wood-dark);border-radius:2px;
     padding:10px;
-    margin-bottom:12px;
-    box-shadow:inset 0 0 0 2px rgba(255,255,255,.05);
+    position:sticky; top:10px;
   }
-  .board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);gap:2px;aspect-ratio:1/1;}
-  .cell{
-    position:relative;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;
-    font-size:6px;font-weight:700;color:#fff;
-    padding:1px;text-align:center;line-height:1;overflow:hidden;
-    border-radius:1px;
+  .scoreboard-title{
+    font-family:var(--pixel-font);font-size:8px;color:var(--gold);
+    text-align:center;margin-bottom:4px;letter-spacing:1px;
   }
-  .cell.empty{background:transparent;}
+  .player-card{
+    background:#2B2745;border:2px solid #443D6B;border-radius:2px;
+    padding:8px;font-size:11px;color:#fff;
+  }
+  .player-card.current{border-color:var(--gold);background:#3A3458;}
+  .player-card .pc-top{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+  .player-card .tok{
+    width:22px;height:22px;display:flex;align-items:center;justify-content:center;
+    font-size:12px;flex-shrink:0;border:2px solid rgba(255,255,255,.3);border-radius:2px;
+  }
+  .player-card .pname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;font-weight:700;}
+  .player-card .hearts{color:var(--redstone);font-size:11px;letter-spacing:-1px;display:block;margin-bottom:2px;}
+  .player-card .xp{color:var(--gold);font-weight:700;font-size:10px;display:block;}
+  .player-card .turn-badge{
+    display:none;font-family:var(--pixel-font);font-size:7px;color:var(--gold);
+    margin-top:4px;text-align:center;
+  }
+  .player-card.current .turn-badge{display:block;}
 
-  /* Block textures */
-  .cell.type-chinese{ /* grass block */
-    background:linear-gradient(180deg, var(--grass) 0%, var(--grass) 35%, var(--dirt) 35%, var(--dirt) 100%);
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,.2);
+  .progress-box{
+    background:#2B2745;border:2px solid #443D6B;border-radius:2px;
+    padding:8px;font-size:10px;color:#D4CFEA;text-align:center;line-height:1.6;
   }
-  .cell.type-math{ /* stone block */
-    background:var(--stone);
-    box-shadow:inset 2px 2px 0 rgba(255,255,255,.15), inset -2px -2px 0 rgba(0,0,0,.25);
-  }
-  .cell.type-science{ /* wood log */
-    background:repeating-linear-gradient(90deg, var(--wood) 0 4px, var(--wood-dark) 4px 5px);
-  }
-  .cell.type-social{ /* sand block */
-    background:var(--sand);
-    box-shadow:inset 2px 2px 0 rgba(255,255,255,.3), inset -2px -2px 0 rgba(0,0,0,.15);
-  }
-  .cell.type-chance{ /* chest */
-    background:linear-gradient(180deg, var(--gold) 0%, #B8862A 100%);
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,.3);
-  }
-  .cell.type-rest{ /* bed */
-    background:linear-gradient(180deg, #C0392B 0%, #fff 0%, #fff 40%, #C0392B 40%);
-  }
-  .cell.type-portal{ /* end portal */
-    background:radial-gradient(circle, var(--portal-purple) 0%, var(--obsidian) 100%);
-    box-shadow:inset 0 0 6px rgba(123,63,184,.8);
-  }
-  .cell.type-start{ /* crafting table */
-    background:linear-gradient(135deg, var(--wood) 0%, var(--wood-dark) 100%);
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,.3);
-  }
-  .cell .cell-emoji{font-size:11px;margin-bottom:0;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.4));}
+  .progress-box strong{color:var(--gold);}
 
-  .cell .tokens-on-cell{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:1px;flex-wrap:wrap;}
-  .cell .mini-tok{
-    width:10px;height:10px;font-size:7px;
-    display:flex;align-items:center;justify-content:center;
-    border:1px solid rgba(255,255,255,.7);border-radius:1px;
-    background:rgba(0,0,0,.4);
+  /* ── Maze area ── */
+  .maze-area{flex:1 1 320px;min-width:300px;}
+  .turn-label{
+    text-align:center;font-size:12px;font-weight:700;color:#D4CFEA;
+    margin-bottom:8px;background:var(--obsidian-light);
+    border:3px solid var(--wood-dark);border-radius:2px;padding:8px;
   }
-
-  /* Dice / action area */
-  .dice-area{
-    background:var(--obsidian-light);
-    border:4px solid var(--wood-dark);
-    border-radius:2px;
-    padding:18px;text-align:center;margin-bottom:12px;
-  }
-  .turn-label{font-size:13px;font-weight:700;color:#D4CFEA;margin-bottom:12px;}
   .turn-label strong{color:var(--gold);}
-  .dice-display{
-    width:60px;height:60px;
-    background:linear-gradient(135deg,#5C5478,#3A3458);
-    border:3px solid var(--gold);border-radius:2px;
-    margin:0 auto 14px;
-    display:flex;align-items:center;justify-content:center;
-    font-size:28px;font-weight:900;color:var(--gold);
-    font-family:var(--pixel-font);
-    transition:transform .15s;
-  }
-  .dice-display.rolling{animation:shake .5s ease;}
-  @keyframes shake{0%,100%{transform:rotate(0);}25%{transform:rotate(-10deg);}75%{transform:rotate(10deg);}}
-  .btn-dice{
-    padding:14px 34px;
-    border:4px solid #B8862A;border-radius:2px;
-    background:var(--gold);color:#3D2817;
-    font-size:13px;font-weight:900;font-family:var(--pixel-font);
-    cursor:pointer;
-    box-shadow:inset 3px 3px 0 rgba(255,255,255,.35), inset -3px -3px 0 rgba(0,0,0,.25);
-    transition:all .1s;
-  }
-  .btn-dice:active:not(:disabled){transform:translateY(2px);box-shadow:none;}
-  .btn-dice:disabled{opacity:.4;cursor:default;}
 
-  /* ── Battle Modal (question popup styled as mob encounter) ── */
+  .maze-wrap{
+    background:var(--obsidian-light);border:4px solid var(--wood-dark);border-radius:2px;
+    padding:8px;margin-bottom:10px;
+  }
+  .maze-grid{
+    display:grid;
+    gap:0;
+    aspect-ratio:1/1;
+    background:#0F0D17;
+    position:relative;
+  }
+  .maze-cell{
+    position:relative;
+    background:#3A3458;
+    display:flex;align-items:center;justify-content:center;
+    font-size:10px;
+  }
+  .maze-cell.floor-visited{background:#4A4470;}
+  .maze-cell.wall-top{box-shadow:inset 0 3px 0 0 var(--wood-dark);}
+  .maze-cell.wall-right{box-shadow:inset -3px 0 0 0 var(--wood-dark);}
+  .maze-cell.wall-bottom{box-shadow:inset 0 -3px 0 0 var(--wood-dark);}
+  .maze-cell.wall-left{box-shadow:inset 3px 0 0 0 var(--wood-dark);}
+  /* combine multiple wall shadows via multiple box-shadow in JS inline style */
+  .maze-cell .cell-icon{font-size:22px;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.5));}
+  .maze-cell .player-marker{
+    position:absolute;font-size:26px;
+    filter:drop-shadow(1px 1px 0 rgba(0,0,0,.6));
+    transition:all .15s ease;
+    z-index:5;
+  }
+  /* When multiple players share a cell, scale down slightly and offset so they don't fully overlap */
+  .maze-cell .player-marker.multi{font-size:20px;}
+
+  /* D-pad */
+  .dpad-wrap{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:8px;}
+  .dpad{
+    display:grid;grid-template-columns:48px 48px 48px;grid-template-rows:48px 48px 48px;
+    gap:4px;
+  }
+  .dpad-btn{
+    border:3px solid var(--wood-dark);border-radius:4px;
+    background:var(--dirt);color:#fff;font-size:18px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 2px 2px 0 rgba(255,255,255,.2),inset -2px -2px 0 rgba(0,0,0,.3);
+  }
+  .dpad-btn:active{transform:translateY(1px);box-shadow:none;}
+  .dpad-btn:disabled{opacity:.3;cursor:default;}
+  .dpad-empty{visibility:hidden;}
+  .dpad-up{grid-column:2;grid-row:1;}
+  .dpad-left{grid-column:1;grid-row:2;}
+  .dpad-center{grid-column:2;grid-row:2;background:var(--obsidian-light);border-color:#443D6B;font-size:16px;}
+  .dpad-right{grid-column:3;grid-row:2;}
+  .dpad-down{grid-column:2;grid-row:3;}
+
+  .legend{
+    display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+    font-size:9px;color:#D4CFEA;margin-top:6px;
+  }
+  .legend span{display:flex;align-items:center;gap:3px;}
+
+  /* ── Battle Modal ── */
   .modal-overlay{
     position:fixed;inset:0;background:rgba(13,11,20,.75);
     display:flex;align-items:center;justify-content:center;padding:16px;z-index:100;
   }
   .modal-card{
-    background:var(--paper); color:#3D2817;
-    border:5px solid var(--wood-dark);border-radius:2px;
+    background:var(--paper);color:#3D2817;border:5px solid var(--wood-dark);border-radius:2px;
     padding:22px 18px;max-width:440px;width:100%;max-height:85vh;overflow-y:auto;
-    animation:popIn .2s ease;
-    box-shadow:0 0 0 3px rgba(0,0,0,.4), 0 12px 0 rgba(0,0,0,.3);
+    box-shadow:0 0 0 3px rgba(0,0,0,.4),0 12px 0 rgba(0,0,0,.3);
   }
-  @keyframes popIn{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
-
   .modal-tag{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:6px 12px;border-radius:2px;
-    font-size:11px;font-weight:900;color:#fff;margin-bottom:12px;
-    font-family:var(--pixel-font);
+    display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:2px;
+    font-size:11px;font-weight:900;color:#fff;margin-bottom:12px;font-family:var(--pixel-font);
     border:2px solid rgba(0,0,0,.25);
   }
   .modal-tag.type-chinese{background:var(--grass-dark);}
   .modal-tag.type-math{background:var(--stone-dark);}
   .modal-tag.type-science{background:var(--wood-dark);}
   .modal-tag.type-social{background:#A8862A;}
-  .modal-tag.type-chance{background:var(--gold);color:#3D2817;}
-  .modal-tag.type-rest{background:#C0392B;}
-  .modal-tag.type-portal{background:var(--portal-purple);}
-
   .modal-q{font-size:16px;font-weight:700;line-height:1.7;margin-bottom:14px;color:#2D2014;}
   .modal-hint{
-    font-size:13px;color:#5C4A33;background:#E8DCC0;
-    border:2px solid #C2A968;border-radius:2px;
+    font-size:13px;color:#5C4A33;background:#E8DCC0;border:2px solid #C2A968;border-radius:2px;
     padding:8px 12px;margin-bottom:14px;line-height:1.6;
   }
   .modal-options{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
   .modal-opt{
-    display:flex;align-items:center;gap:10px;
-    padding:12px 14px;border:3px solid #C2A968;border-radius:2px;
-    cursor:pointer;font-size:14px;font-weight:500;background:#fff;
-    text-align:left;width:100%;font-family:var(--body-font);
-    transition:all .1s; color:#2D2014;
+    display:flex;align-items:center;gap:10px;padding:12px 14px;border:3px solid #C2A968;border-radius:2px;
+    cursor:pointer;font-size:14px;font-weight:500;background:#fff;text-align:left;width:100%;
+    font-family:var(--body-font);color:#2D2014;
   }
   .modal-opt:hover:not(:disabled){border-color:var(--emerald);background:#EEF7EF;}
   .modal-opt .ol{
-    width:24px;height:24px;border-radius:2px;
-    background:#E8DCC0;color:var(--wood-dark);font-weight:900;font-size:12px;
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;
-    border:2px solid #C2A968;
+    width:24px;height:24px;border-radius:2px;background:#E8DCC0;color:var(--wood-dark);
+    font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;border:2px solid #C2A968;
   }
   .modal-opt.selected{border-color:var(--gold);background:#FFF6DE;}
   .modal-opt.selected .ol{background:var(--gold);color:#3D2817;}
@@ -347,46 +256,48 @@
   .modal-opt.correct .ol{background:var(--emerald);color:#fff;}
   .modal-opt.wrong{border-color:var(--redstone);background:#FBE5E3;}
   .modal-opt.wrong .ol{background:var(--redstone);color:#fff;}
-
   .modal-fill{
-    width:100%;padding:12px 14px;
-    border:3px solid #C2A968;border-radius:2px;
+    width:100%;padding:12px 14px;border:3px solid #C2A968;border-radius:2px;
     font-size:15px;font-family:var(--body-font);outline:none;margin-bottom:14px;
     color:#2D2014;background:#fff;
   }
   .modal-fill:focus{border-color:var(--emerald);}
   .modal-fill.correct-input{border-color:var(--emerald);background:#E2F5E6;}
   .modal-fill.wrong-input{border-color:var(--redstone);background:#FBE5E3;}
-
   .modal-feedback{
-    padding:12px 14px;border-radius:2px;font-size:14px;font-weight:500;
-    line-height:1.6;margin-bottom:14px;border:2px solid;
+    padding:12px 14px;border-radius:2px;font-size:14px;font-weight:500;line-height:1.6;
+    margin-bottom:14px;border:2px solid;
   }
   .modal-feedback.ok{background:#E2F5E6;color:#1E6B33;border-color:#7FC796;}
   .modal-feedback.bad{background:#FBE5E3;color:#8A2420;border-color:#E2918C;}
   .modal-feedback.info{background:#E8DCC0;color:#3D2817;border-color:#C2A968;}
-
+  .modal-teach{
+    background:#FFF6DE;border:2px solid var(--gold);border-radius:2px;
+    padding:12px 14px;margin-bottom:14px;font-size:13px;color:#5C4A1F;line-height:1.7;
+  }
+  .teach-label{
+    display:block;font-family:var(--pixel-font);font-size:10px;
+    color:#B8862A;margin-bottom:6px;letter-spacing:1px;
+  }
   .modal-btn{
-    width:100%;padding:13px;
-    border:3px solid #2B7A42;border-radius:2px;
-    font-size:14px;font-weight:700;font-family:var(--pixel-font);
-    cursor:pointer;color:#fff;background:var(--emerald);
-    transition:all .1s;
+    width:100%;padding:13px;border:3px solid #2B7A42;border-radius:2px;
+    font-size:14px;font-weight:700;font-family:var(--pixel-font);cursor:pointer;
+    color:#fff;background:var(--emerald);
   }
   .modal-btn:active:not(:disabled){transform:translateY(2px);}
   .modal-btn:disabled{opacity:.4;cursor:default;}
 
   /* ── Result screen ── */
-  .result-icon{font-size:50px;text-align:center;margin-bottom:8px;}
+  .result-icon{font-size:48px;text-align:center;margin-bottom:8px;}
   .winner-name{
-    text-align:center;font-family:var(--pixel-font);font-size:13px;
+    text-align:center;font-family:var(--pixel-font);font-size:12px;
     margin-bottom:6px;color:var(--wood-dark);line-height:1.7;
   }
   .winner-sub{text-align:center;font-size:13px;color:#5C4A33;margin-bottom:20px;}
   .result-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
   .result-row{
-    display:flex;align-items:center;gap:12px;
-    background:#E8DCC0;border:2px solid #C2A968;border-radius:2px;padding:12px 14px;
+    display:flex;align-items:center;gap:12px;background:#E8DCC0;
+    border:2px solid #C2A968;border-radius:2px;padding:12px 14px;
   }
   .result-row.rank-1{background:#FFF1CC;border-color:var(--gold);}
   .result-row .rank{font-size:18px;width:24px;text-align:center;}
@@ -398,15 +309,24 @@
   .result-row .rstats{font-size:11px;color:#5C4A33;text-align:right;line-height:1.5;}
   .result-row .rstats strong{color:#2D2014;font-size:14px;}
 
-  .footer-credit{
-    text-align:center;font-size:11px;color:#7A6A8A;padding:18px 0 4px;
-  }
+  .footer-credit{text-align:center;font-size:11px;color:#7A6A8A;padding:18px 0 4px;}
   .footer-credit a{color:var(--gold);font-weight:700;text-decoration:none;}
   .footer-credit a:hover{text-decoration:underline;}
 
+  /* ── Responsive: stack sidebar above maze on narrow screens ── */
+  @media (max-width:620px){
+    .game-wrap{flex-direction:column;}
+    .scoreboard{
+      width:100%;position:static;
+      flex-direction:row;flex-wrap:wrap;gap:6px;
+    }
+    .player-card{flex:1 1 auto;min-width:120px;}
+    .scoreboard-title{width:100%;}
+    .progress-box{flex:1 1 100%;}
+  }
   @media (max-width:380px){
-    .cell{font-size:5px;}
-    .cell .cell-emoji{font-size:9px;}
+    .dpad{grid-template-columns:42px 42px 42px;grid-template-rows:42px 42px 42px;}
+    .dpad-btn{font-size:16px;}
   }
 </style>
 </head>
@@ -414,18 +334,17 @@
 
 <div class="header">
   <button id="soundToggleBtn" class="sound-toggle" onclick="toggleSound()">🔊</button>
-  <h1>⛏️ 期末考大冒險<br>麥塊打怪版</h1>
-  <p>國語・數學・自然・社會｜全家一起闖關</p>
+  <h1>⛏️ 期末考大冒險<br>麥塊迷宮探險</h1>
+  <p>國語・數學・自然・社會｜全家輪流闖關</p>
   <p class="header-disclaimer">適用 2026 國小三年級程度練習・非正式考試範圍，僅供課後複習參考</p>
 </div>
 
-<div class="container">
-
-  <!-- ══════ SETUP SCREEN ══════ -->
-  <div id="setupScreen" class="card pixel-frame">
-    <div class="setup-icon">🗡️</div>
-    <h2>準備好<br>開始冒險了嗎？</h2>
-    <p class="sub">擲骰子前進，遇到怪物就要答題打怪！<br>答對掉經驗值，答錯會被打扣愛心！</p>
+<!-- ══════ SETUP SCREEN ══════ -->
+<div id="setupScreen" class="setup-wrap">
+  <div class="card pixel-frame">
+    <div class="setup-icon">🗺️</div>
+    <h2>準備好<br>進入迷宮了嗎？</h2>
+    <p class="sub">用方向鍵在迷宮裡探險，遇到怪物要答題打怪！<br>消滅所有怪物、找到寶箱就能通關！</p>
 
     <div class="field-label">👥 玩家人數</div>
     <div class="pill-row" id="playerCountPills">
@@ -435,48 +354,54 @@
       <button class="pill" data-val="4" onclick="setPlayerCount(4)">4人</button>
     </div>
 
-    <div class="field-label">🔄 闖關輪數</div>
-    <div class="pill-row" id="roundPills">
-      <button class="pill" data-val="1" onclick="setRounds(1)">1輪</button>
-      <button class="pill" data-val="2" onclick="setRounds(2)">2輪</button>
-      <button class="pill" data-val="3" onclick="setRounds(3)">3輪</button>
-    </div>
-
     <div class="field-label">✏️ 玩家名稱</div>
     <div class="player-name-list" id="playerNameList"></div>
 
-    <button class="btn-primary" onclick="startGame()">開始冒險 ▶</button>
+    <button class="btn-primary" onclick="startGame()">進入迷宮 ▶</button>
+  </div>
+</div>
+
+<!-- ══════ GAME SCREEN ══════ -->
+<div id="gameScreen" class="game-wrap hidden">
+  <div class="scoreboard pixel-frame" id="scoreboard">
+    <div class="scoreboard-title">⚔️ 冒險者紀錄</div>
+    <!-- player-card elements injected here -->
+    <div class="progress-box" id="progressBox"></div>
   </div>
 
-  <!-- ══════ GAME SCREEN ══════ -->
-  <div id="gameScreen" class="hidden">
-    <div class="game-top" id="gameTop"></div>
-    <div class="round-banner" id="roundBanner"></div>
-
-    <div class="board-wrap">
-      <div class="board" id="board"></div>
+  <div class="maze-area">
+    <div class="turn-label" id="turnLabel"></div>
+    <div class="maze-wrap">
+      <div class="maze-grid" id="mazeGrid"></div>
     </div>
-
-    <div class="dice-area">
-      <div class="turn-label" id="turnLabel"></div>
-      <div class="dice-display" id="diceDisplay">🎲</div>
-      <button class="btn-dice" id="rollBtn" onclick="rollDice()">擲骰子</button>
+    <div class="dpad-wrap">
+      <div class="dpad">
+        <button class="dpad-btn dpad-up" onclick="movePlayer(0,-1)">⬆️</button>
+        <button class="dpad-btn dpad-left" onclick="movePlayer(-1,0)">⬅️</button>
+        <div class="dpad-btn dpad-center">🧭</div>
+        <button class="dpad-btn dpad-right" onclick="movePlayer(1,0)">➡️</button>
+        <button class="dpad-btn dpad-down" onclick="movePlayer(0,1)">⬇️</button>
+      </div>
+    </div>
+    <div class="legend">
+      <span>🌱国語</span><span>⛏️數學</span><span>🪵自然</span><span>🏖️社會</span><span>📦寶箱(終點)</span>
     </div>
   </div>
+</div>
 
-  <!-- ══════ RESULT SCREEN ══════ -->
-  <div id="resultScreen" class="hidden card pixel-frame">
+<!-- ══════ RESULT SCREEN ══════ -->
+<div id="resultScreen" class="setup-wrap hidden">
+  <div class="card pixel-frame">
     <div class="result-icon">🏆</div>
     <div class="winner-name" id="winnerName"></div>
-    <div class="winner-sub">恭喜完成期末考大冒險！</div>
+    <div class="winner-sub">恭喜完成迷宮大冒險！</div>
     <div class="result-list" id="resultList"></div>
     <button class="btn-primary" onclick="location.reload()">🔄 再玩一次</button>
   </div>
+</div>
 
-  <div class="footer-credit">
-    製作：<a href="https://www.instagram.com/hello.maggie" target="_blank" rel="noopener">@hello.maggie</a>
-  </div>
-
+<div class="footer-credit">
+  製作：<a href="https://www.instagram.com/hello.maggie" target="_blank" rel="noopener">@hello.maggie</a>
 </div>
 
 <!-- Battle Modal -->
@@ -486,103 +411,129 @@
 
 <script>
 // ═══════════════════════════════════════════════════
-//  三年級期末模擬考 - 麥塊打怪版 Game Logic
+//  三年級期末模擬考 - 麥塊迷宮探險 Game Logic
 // ═══════════════════════════════════════════════════
 
-// ---------- Question banks (validated, no duplicate options) ----------
+// ---------- Question banks (all multiple-choice, validated no duplicate options) ----------
 const BANKS = {
 chinese:[
-  {type:'choice',question:'「美麗」的「麗」字，共有幾畫？',options:['17畫','18畫','19畫','20畫'],answer:2},
-  {type:'choice',question:'下列哪個詞語是「反義詞」組合？',options:['冷靜－鎮定','勤勞－懶惰','開心－快樂','美麗－漂亮'],answer:1},
-  {type:'choice',question:'「他跑得很___」，空格最適合填入哪個詞？',options:['快速','快樂','快捷','快活'],answer:0},
-  {type:'choice',question:'下列哪一個句子用了「比喻」的修辭法？',options:['天空很藍','彎彎的月亮像小船','風吹過來了','他跑步很快'],answer:1},
-  {type:'choice',question:'「ㄔㄨㄢ」是哪個字的注音？',options:['穿','傳','船','串'],answer:2,hint:'想想渡河用的交通工具'},
-  {type:'choice',question:'「日積月累」這個成語的意思是？',options:['每天都很開心','一點一點慢慢累積','今天比昨天多','日子過得很快'],answer:1},
-  {type:'choice',question:'下列哪一個字是形聲字？',options:['日','月','明','江'],answer:3,hint:'形聲字由形旁和聲旁組成'},
-  {type:'choice',question:'「媽媽去___買菜。」空格應填哪裡？',options:['超市','學校','公園','圖書館'],answer:0},
-  {type:'choice',question:'「ㄅㄆㄇㄈ」屬於注音符號中的哪一類？',options:['韻母','聲母','介母','結合韻'],answer:1},
-  {type:'fill',question:'「春眠不覺曉，___啼鳥」，空格應填入什麼？',answer:'處處',accept:['到處','處處聞']},
-  {type:'fill',question:'「勤」的部首是___。',answer:'力',accept:['力部']},
-  {type:'fill',question:'「一石二___」，空格填入哪個字？',answer:'鳥',accept:[]},
-  {type:'fill',question:'「他非常___心，把功課做得很好。」空格填入適當詞語。',answer:'用',accept:['專','認真','細','努力']},
-  {type:'fill',question:'「月」字有___畫。',answer:'4',accept:['四']},
-  {type:'fill',question:'「有志者，事___成」，空格填什麼字？',answer:'竟',accept:[]},
+  {type:'choice',question:'「美麗」的「麗」字，共有幾畫？',options:['17畫','18畫','19畫','20畫'],answer:2,explain:'「麗」字共19畫，可以拆成「丶丶丿一一一丨一一一丨フ一一一丨フ一」慢慢數，或用字典查筆畫確認。'},
+  {type:'choice',question:'下列哪個詞語是「反義詞」組合？',options:['冷靜－鎮定','勤勞－懶惰','開心－快樂','美麗－漂亮'],answer:1,explain:'「勤勞」和「懶惰」意思完全相反，是反義詞；其他三組意思相近，屬於「同義詞」。'},
+  {type:'choice',question:'「他跑得很___」，空格最適合填入哪個詞？',options:['快速','快樂','快捷','快活'],answer:0,explain:'形容跑步的速度要用「快速」，「快樂」「快活」是形容心情，「快捷」較常用於形容服務或方式。'},
+  {type:'choice',question:'下列哪一個句子用了「比喻」的修辭法？',options:['天空很藍','彎彎的月亮像小船','風吹過來了','他跑步很快'],answer:1,explain:'「月亮像小船」用「像」把月亮比喻成小船，這就是比喻句；其他句子都只是平鋪直敘的描述。'},
+  {type:'choice',question:'「ㄔㄨㄢ」是哪個字的注音？',options:['穿','傳','船','串'],answer:2,hint:'想想渡河用的交通工具',explain:'「船」的注音是ㄔㄨㄢˊ；「穿」是ㄔㄨㄢ但聲調不同，「傳」「串」的注音聲調也不同，要連聲調一起記。'},
+  {type:'choice',question:'「日積月累」這個成語的意思是？',options:['每天都很開心','一點一點慢慢累積','今天比昨天多','日子過得很快'],answer:1,explain:'「日積月累」字面意思是「每天累積、每月增加」，用來形容長時間慢慢積累的過程。'},
+  {type:'choice',question:'下列哪一個字是形聲字？',options:['日','月','明','江'],answer:3,hint:'形聲字由形旁和聲旁組成',explain:'「江」是「水」（形旁，表示跟水有關）加「工」（聲旁，表示讀音），是典型的形聲字；「日」「月」是象形字，「明」是會意字。'},
+  {type:'choice',question:'「媽媽去___買菜。」空格應填哪裡？',options:['超市','學校','公園','圖書館'],answer:0,explain:'買菜通常會去「超市」或市場，「學校」「公園」「圖書館」都不是買菜的地方，從生活常識判斷即可。'},
+  {type:'choice',question:'「ㄅㄆㄇㄈ」屬於注音符號中的哪一類？',options:['韻母','聲母','介母','結合韻'],answer:1,explain:'「ㄅㄆㄇㄈ」是發音的開頭子音，屬於「聲母」；「ㄚㄛㄜㄝ」這類才是「韻母」。'},
+  {type:'choice',question:'「春眠不覺曉，___啼鳥」，空格應填入什麼？',options:['處處','到處','此時','春天'],answer:0,hint:'這是孟浩然《春曉》的詩句',explain:'這是唐代孟浩然《春曉》的名句：「春眠不覺曉，處處聞啼鳥」，「處處」是固定的詩句用字，建議直接背熟整首詩。'},
+  {type:'choice',question:'「勤」的部首是下列哪一個？',options:['力','口','人','水'],answer:0,explain:'「勤」字右邊的「力」是部首，表示跟力氣、努力有關；查字典時部首查「力部」就能找到這個字。'},
+  {type:'choice',question:'「一石二___」是常見的成語，空格應填入哪個字？',options:['鳥','鳥兒','鳳','雀'],answer:0,explain:'「一石二鳥」是固定成語，意思是丟一顆石頭打中兩隻鳥，比喻一個動作達成兩個目的，不能隨意替換用字。'},
+  {type:'choice',question:'「他非常___心，把功課做得很好。」空格填入哪個詞最恰當？',options:['用','傷','安','放'],answer:0,explain:'「用心」表示專心、認真投入，符合句意；「傷心」「安心」「放心」放進句子裡意思都不通順。'},
+  {type:'choice',question:'「月」字共有幾畫？',options:['3畫','4畫','5畫','6畫'],answer:1,explain:'「月」字寫起來是「丿冂二」，總共4畫，可以一筆一筆數，或寫的時候邊寫邊數會更清楚。'},
+  {type:'choice',question:'「有志者，事___成」，空格應填入哪個字？',options:['竟','必','終','才'],answer:0,explain:'「有志者，事竟成」是固定俗語，意思是有決心的人最終一定能成功，「竟」表示「終究、最後」。'},
+  {type:'choice',question:'「ㄐㄧㄠ」可能是哪個字的注音？',options:['交','米','安','可'],answer:0,explain:'「交」的注音正是ㄐㄧㄠ；「米」是ㄇㄧˇ、「安」是ㄢ、「可」是ㄎㄜˇ，平時可以多練習拼讀注音來熟悉這些字音。'},
+  {type:'choice',question:'下列哪一組是「量詞」用法正確的？',options:['一隻椅子','一張狗','一頭飛機','一輛汽車'],answer:3,explain:'汽車要用「一輛」，椅子用「一張」，狗用「一隻」，飛機用「一架」。量詞要跟物品搭配，平時多觀察生活中的用法就能記住。'},
+  {type:'choice',question:'「他小心翼翼地捧著花瓶」，「翼翼」是用來形容什麼？',options:['速度很快','非常謹慎小心','聲音很大','心情很開心'],answer:1,explain:'「小心翼翼」是固定詞語，形容做事非常謹慎、小心，常用來描述拿易碎物品或處理重要事情的態度。'},
+  {type:'choice',question:'下列哪一個詞語使用了「疊字」？',options:['快樂','高興','亮晶晶','美麗'],answer:2,explain:'「亮晶晶」用「晶」字重複出現（疊字），可以增強描寫的效果；其他選項都沒有重複的字。'},
+  {type:'choice',question:'寫信給長輩時，結尾敬語應該用哪一個？',options:['祝你順心','敬請鈞安','加油喔','再見啦'],answer:1,hint:'對長輩要用比較正式的敬語',explain:'寫信給長輩要用比較正式、有禮貌的敬語，「敬請鈞安」是傳統書信常用語；其他選項較口語，適合用在同輩朋友之間。'},
+  {type:'choice',question:'「狐假___威」，空格應填入哪個字？',options:['虎','獅','狼','貓'],answer:0,hint:'這個成語跟一種兇猛的動物有關',explain:'「狐假虎威」是出自寓言故事的成語，講狐狸假借老虎的威風來嚇唬別的動物，比喻仗著別人的勢力欺壓他人。'},
+  {type:'choice',question:'「小心___翼」，形容走路很謹慎，空格應填入哪個字？',options:['翼','心','慢','腳'],answer:0,explain:'這是成語「小心翼翼」，前後兩個字都是「翼」，整個詞語要一起記住，不能拆開替換。'},
 ],
 math:[
-  {type:'choice',question:'345 + 278 = ？',options:['613','623','633','643'],answer:1},
-  {type:'choice',question:'一個長方形的長是 8 公分，寬是 5 公分，周長是多少公分？',options:['26公分','30公分','40公分','13公分'],answer:0},
-  {type:'choice',question:'7 × 8 = ？',options:['54','56','58','63'],answer:1},
-  {type:'choice',question:'500 − 237 = ？',options:['253','263','273','283'],answer:1},
-  {type:'choice',question:'1 公斤 = 幾公克？',options:['10公克','100公克','1000公克','10000公克'],answer:2},
-  {type:'choice',question:'下午 3 點 15 分，再過 45 分鐘是幾點？',options:['下午3點45分','下午4點','下午4點15分','下午3點60分'],answer:1},
-  {type:'choice',question:'一箱有 24 顆蘋果，買了 3 箱，共有幾顆？',options:['27顆','62顆','72顆','81顆'],answer:2},
-  {type:'choice',question:'36 ÷ 4 = ？',options:['7','8','9','10'],answer:2},
-  {type:'choice',question:'下列哪個數最大？',options:['498','502','489','510'],answer:3},
-  {type:'fill',question:'1 公尺 = ___ 公分',answer:'100',accept:['一百']},
-  {type:'fill',question:'三角形有 ___ 個角。',answer:'3',accept:['三']},
-  {type:'fill',question:'9 × 6 = ___',answer:'54',accept:['五十四']},
-  {type:'fill',question:'400 + ___ = 650',answer:'250',accept:['二百五十']},
-  {type:'fill',question:'1 小時 = ___ 分鐘',answer:'60',accept:['六十']},
-  {type:'fill',question:'一個正方形的邊長是 6 公分，周長是 ___ 公分。',answer:'24',accept:['二十四']},
+  {type:'choice',question:'345 + 278 = ？',options:['613','623','633','643'],answer:1,explain:'直式計算：個位 5+8=13（進1），十位 4+7+1=12（進1），百位 3+2+1=6，結果是623。記得每次進位都要加到下一位。'},
+  {type:'choice',question:'一個長方形的長是 8 公分，寬是 5 公分，周長是多少公分？',options:['26公分','30公分','40公分','13公分'],answer:0,explain:'長方形周長公式是「(長+寬)×2」，所以是 (8+5)×2 = 13×2 = 26 公分。'},
+  {type:'choice',question:'7 × 8 = ？',options:['54','56','58','63'],answer:1,explain:'7的乘法口訣：7×8=56，可以用「7×7=49，再加7」的方式推算，或直接背熟九九乘法表。'},
+  {type:'choice',question:'500 − 237 = ？',options:['253','263','273','283'],answer:1,explain:'直式減法：個位0−7不夠減，要從十位借1變成10−7=3；十位9（借走1後）−3=6；百位4−2=2，結果是263。'},
+  {type:'choice',question:'1 公斤 = 幾公克？',options:['10公克','100公克','1000公克','10000公克'],answer:2,explain:'重量單位換算：1公斤=1000公克，就像1公升=1000毫升一樣，是常見的「千進位」單位。'},
+  {type:'choice',question:'下午 3 點 15 分，再過 45 分鐘是幾點？',options:['下午3點45分','下午4點','下午4點15分','下午3點60分'],answer:1,explain:'15分+45分=60分=1小時，所以下午3點15分再過45分鐘剛好滿1小時，變成下午4點整。'},
+  {type:'choice',question:'一箱有 24 顆蘋果，買了 3 箱，共有幾顆？',options:['27顆','62顆','72顆','81顆'],answer:2,explain:'這是乘法應用題：24×3=72，可以拆成20×3=60，再加4×3=12，60+12=72。'},
+  {type:'choice',question:'36 ÷ 4 = ？',options:['7','8','9','10'],answer:2,explain:'可以用乘法反推：4×9=36，所以36÷4=9。除法和乘法是互逆的運算，遇到除法不熟練時可以用乘法驗證。'},
+  {type:'choice',question:'下列哪個數最大？',options:['498','502','489','510'],answer:3,explain:'比較三位數大小先看百位：5XX 比 4XX 大，所以502和510都比498、489大；再比較502和510的十位，510較大。'},
+  {type:'choice',question:'1 公尺 = ___ 公分，空格應填入多少？',options:['10','100','1000','10000'],answer:1,explain:'長度單位換算：1公尺=100公分，這是最基本的長度換算，跟1公尺=1000毫米也要分清楚不要搞混。'},
+  {type:'choice',question:'三角形有幾個角？',options:['2個','3個','4個','5個'],answer:1,explain:'三角形顧名思義有「三」個角和三個邊，這是三角形最基本的定義特徵。'},
+  {type:'choice',question:'9 × 6 = ？',options:['48','52','54','56'],answer:2,explain:'9的乘法口訣：9×6=54，也可以用「9×6 = 10×6 − 6 = 60−6 = 54」的方法快速算出來。'},
+  {type:'choice',question:'400 + ___ = 650，空格應填入多少？',options:['200','250','300','350'],answer:1,explain:'這是「找未知數」的題目，可以用減法反推：650−400=250，所以空格應填250。'},
+  {type:'choice',question:'1 小時 = ___ 分鐘，空格應填入多少？',options:['30','45','60','100'],answer:2,explain:'時間單位換算：1小時=60分鐘，這是固定的時間換算規則，要熟記起來，之後計算時間加減才不會出錯。'},
+  {type:'choice',question:'一個正方形的邊長是 6 公分，周長是多少公分？',options:['12公分','18公分','24公分','36公分'],answer:2,explain:'正方形四邊長度相等，周長公式是「邊長×4」，所以是 6×4=24 公分。'},
+  {type:'choice',question:'下列哪一個是「分數」1/4 的正確讀法？',options:['四分之一','一分之四','四一分','一四分'],answer:0,explain:'分數讀法是先讀分母再讀分子，1/4 要讀成「四分之一」，分母（4）代表平分成幾份，分子（1）代表取幾份。'},
+  {type:'choice',question:'1 公升 = 幾毫升？',options:['10毫升','100毫升','1000毫升','10000毫升'],answer:2,explain:'容量單位換算：1公升=1000毫升，跟1公尺=1000毫米、1公斤=1000公克一樣，都是常見的「千進位」單位換算。'},
+  {type:'choice',question:'比較 3/4 和 1/4 的大小，下列哪個正確？',options:['3/4 比較大','1/4 比較大','一樣大','無法比較'],answer:0,explain:'兩個分數分母相同（都是4），只要比較分子大小即可：3>1，所以3/4比1/4大。'},
+  {type:'choice',question:'一個圓的圓心到圓周上任一點的距離叫做什麼？',options:['直徑','半徑','周長','面積'],answer:1,explain:'從圓心到圓周邊上任一點的距離叫「半徑」；如果是經過圓心、連接圓周兩端的線段則叫「直徑」（直徑=半徑×2）。'},
+  {type:'choice',question:'下列哪一個角是「直角」？',options:['剛好90度的角','小於90度的角','大於90度的角','180度的角'],answer:0,explain:'直角剛好是90度，可以用三角板的直角邊來檢查；小於90度叫銳角，大於90度（但小於180度）叫鈍角，180度是一條直線。'},
+  {type:'choice',question:'128 ÷ 4 = ？',options:['30','32','34','36'],answer:1,explain:'可以拆解計算：128=120+8，120÷4=30，8÷4=2，30+2=32。或直接用乘法驗證：4×32=128。'},
+  {type:'choice',question:'1/2 + 1/4 = ？（化成最簡分數）',options:['1/4','2/4','3/4','1'],answer:2,explain:'分母不同要先通分：1/2 = 2/4，再加上 1/4，變成 2/4+1/4=3/4。分數加法要先確認分母一樣才能直接加分子。'},
+  {type:'choice',question:'一個長方形長 10 公分、寬 4 公分，面積是多少平方公分？',options:['28','36','40','44'],answer:2,explain:'長方形面積公式是「長×寬」，所以是 10×4=40 平方公分。要注意面積跟周長公式不同，別搞混了。'},
 ],
 science:[
-  {type:'choice',question:'植物進行光合作用，主要需要什麼？',options:['水和陽光和二氧化碳','水和土壤和氮氣','陽光和氧氣和沙子','肥料和水和氫氣'],answer:0},
-  {type:'choice',question:'下列哪一種動物是昆蟲？',options:['蜘蛛','蜻蜓','蜈蚣','螃蟹'],answer:1,hint:'昆蟲有6隻腳'},
-  {type:'choice',question:'磁鐵的哪兩個極會互相吸引？',options:['N極和N極','S極和S極','N極和S極','都不會'],answer:2},
-  {type:'choice',question:'水變成水蒸氣叫做什麼？',options:['凝固','蒸發','凝結','融化'],answer:1},
-  {type:'choice',question:'春天過後是哪個季節？',options:['秋天','冬天','夏天','又回春天'],answer:2},
-  {type:'choice',question:'下列哪一種不是植物的繁殖方式？',options:['種子','孢子','分裂','花粉'],answer:2,hint:'分裂是微生物的方式'},
-  {type:'choice',question:'我們用什麼器官呼吸？',options:['心臟','肺臟','胃','腎臟'],answer:1},
-  {type:'choice',question:'雨水是從哪裡來的？',options:['海水直接噴出來','水蒸氣在高空冷卻凝結','山上的冰雪融化','工廠製造的'],answer:1},
-  {type:'choice',question:'昆蟲的身體分為幾個部分？',options:['2','3','4','6'],answer:1,hint:'頭、胸、腹'},
-  {type:'fill',question:'磁鐵同極相___，異極相___。（填兩字，用「、」隔開）',answer:'斥、吸',accept:['排斥、吸引','斥、引']},
-  {type:'fill',question:'水結成冰叫做___。',answer:'凝固',accept:['結冰','固化']},
-  {type:'fill',question:'植物的根的主要功能是___和___水分。（填兩字，用「、」隔開）',answer:'固定、吸收',accept:['吸收、固定','固定植物、吸收水分']},
-  {type:'fill',question:'蝴蝶的一生經過：卵→___→蛹→成蟲。',answer:'幼蟲',accept:['毛毛蟲']},
-  {type:'fill',question:'太陽從___邊升起。',answer:'東',accept:['東方','東邊']},
-  {type:'fill',question:'昆蟲有___對翅膀（多數情況）。',answer:'2',accept:['兩','二','兩對','2對']},
+  {type:'choice',question:'植物進行光合作用，主要需要什麼？',options:['水和陽光和二氧化碳','水和土壤和氮氣','陽光和氧氣和沙子','肥料和水和氫氣'],answer:0,explain:'光合作用是植物利用陽光，把水和二氧化碳轉變成養分（葡萄糖）和氧氣的過程，這三個要素缺一不可。'},
+  {type:'choice',question:'下列哪一種動物是昆蟲？',options:['蜘蛛','蜻蜓','蜈蚣','螃蟹'],answer:1,hint:'昆蟲有6隻腳',explain:'蜻蜓有6隻腳、身體分頭胸腹三節，符合昆蟲的定義；蜘蛛有8隻腳屬於蜘蛛綱，螃蟹和蜈蚣的腳數也不符合昆蟲特徵。'},
+  {type:'choice',question:'磁鐵的哪兩個極會互相吸引？',options:['N極和N極','S極和S極','N極和S極','都不會'],answer:2,explain:'磁鐵的規則是「同極相斥、異極相吸」，N極和S極是不同極性，所以會互相吸引；相同極性（N-N或S-S）則會互相排斥。'},
+  {type:'choice',question:'水變成水蒸氣叫做什麼？',options:['凝固','蒸發','凝結','融化'],answer:1,explain:'液態水變成氣態水蒸氣的過程叫「蒸發」；反過來水蒸氣變回水滴叫「凝結」，水變冰叫「凝固」，冰變水叫「融化」。'},
+  {type:'choice',question:'春天過後是哪個季節？',options:['秋天','冬天','夏天','又回春天'],answer:2,explain:'台灣四季的順序是春、夏、秋、冬，按照這個固定循環，春天之後接著就是夏天。'},
+  {type:'choice',question:'下列哪一種不是植物的繁殖方式？',options:['種子','孢子','分裂','花粉'],answer:2,hint:'分裂是微生物的方式',explain:'「分裂」是單細胞生物（如細菌、酵母菌）的繁殖方式，植物主要靠種子、孢子或花粉授粉等方式來繁殖後代。'},
+  {type:'choice',question:'我們用什麼器官呼吸？',options:['心臟','肺臟','胃','腎臟'],answer:1,explain:'人體呼吸主要靠「肺臟」進行氣體交換（吸入氧氣、排出二氧化碳）；心臟負責打血液循環，胃負責消化，腎臟負責過濾血液。'},
+  {type:'choice',question:'雨水是從哪裡來的？',options:['海水直接噴出來','水蒸氣在高空冷卻凝結','山上的冰雪融化','工廠製造的'],answer:1,explain:'地表水分蒸發變成水蒸氣，上升到高空後遇冷凝結成小水滴聚集成雲，水滴變大後就降落成雨，這是水循環的一部分。'},
+  {type:'choice',question:'昆蟲的身體分為幾個部分？',options:['2','3','4','6'],answer:1,hint:'頭、胸、腹',explain:'昆蟲身體分為「頭、胸、腹」三個部分，這是判斷昆蟲的重要特徵之一，再加上6隻腳和身體分節的特徵。'},
+  {type:'choice',question:'磁鐵同極相斥、異極相吸，下列哪個說法正確？',options:['N極和S極會互相排斥','N極和N極會互相吸引','N極和S極會互相吸引','磁鐵之間沒有作用力'],answer:2,explain:'磁鐵的基本規則：相同極性（N-N、S-S）會互相排斥，不同極性（N-S）會互相吸引，這是磁鐵最重要的性質。'},
+  {type:'choice',question:'水結成冰的現象叫做什麼？',options:['蒸發','凝結','凝固','融化'],answer:2,explain:'液態水在低溫下變成固態冰，這個過程叫「凝固」；反過來冰受熱變回水叫「融化」，要注意這兩個詞不要搞混。'},
+  {type:'choice',question:'植物的根的主要功能是什麼？',options:['開花結果','固定植物、吸收水分','製造氧氣','吸引昆蟲'],answer:1,explain:'根的主要功能是把植物固定在土壤裡，並從土壤中吸收水分和養分；製造氧氣主要靠葉子的光合作用，開花結果是花和果實的功能。'},
+  {type:'choice',question:'蝴蝶的一生經過：卵→___→蛹→成蟲，空格應填入什麼？',options:['幼蟲','成蟲','卵殼','繭'],answer:0,explain:'蝴蝶的生長過程（完全變態）是「卵→幼蟲（毛毛蟲）→蛹→成蟲」，幼蟲階段會不斷進食成長，之後才會化蛹。'},
+  {type:'choice',question:'太陽從哪一邊升起？',options:['東邊','西邊','南邊','北邊'],answer:0,explain:'地球自轉的方向固定，使得太陽永遠從「東邊」升起、從「西邊」落下，這是判斷方向的重要生活常識。'},
+  {type:'choice',question:'昆蟲通常有幾對翅膀？',options:['1對','2對','3對','沒有翅膀'],answer:1,explain:'大多數昆蟲（如蝴蝶、蜻蜓）有2對（4片）翅膀，但也有例外，如蒼蠅只有1對翅膀，這算是進階的補充知識。'},
+  {type:'choice',question:'天空中飄著大片白色棉花狀的雲，比較可能會是哪種天氣？',options:['晴天','即將下雨','打雷閃電','沙塵暴'],answer:0,explain:'白色棉花狀的雲（積雲）通常出現在晴朗穩定的天氣，跟即將下雨前常見的厚重灰黑色雲層不同。'},
+  {type:'choice',question:'下列哪一種現象屬於「凝結」？',options:['冰塊融化成水','水蒸氣變成小水滴','水變成水蒸氣','鐵生鏽'],answer:1,explain:'「凝結」是氣態變成液態的過程，水蒸氣遇冷變成小水滴（例如杯子外壁的水珠）就是凝結現象；冰融化是「融化」，水變氣是「蒸發」。'},
+  {type:'choice',question:'植物的種子發芽時，最先需要的條件是下列哪一項？',options:['陽光、空氣、肥料','水分、空氣、適當溫度','土壤、肥料、陽光','水分、肥料、陽光'],answer:1,explain:'種子發芽的三大基本條件是「水分、空氣、適當溫度」；陽光和肥料是發芽後植物長大時才需要的，發芽階段不一定需要陽光。'},
+  {type:'choice',question:'物體在水中會浮起來，主要是因為受到水的什麼力？',options:['重力','浮力','摩擦力','磁力'],answer:1,explain:'水會對物體產生向上托的力，叫做「浮力」，當浮力大於物體重量時，物體就會浮在水面上。'},
+  {type:'choice',question:'下列哪一種不是磁鐵能吸引的物質？',options:['鐵釘','迴紋針','塑膠尺','鋼珠'],answer:2,explain:'磁鐵只會吸引「鐵、鈷、鎂」等特定金屬製成的物品；塑膠是非金屬材質，磁鐵不會吸引它。'},
+  {type:'choice',question:'雲、雨、霧都是空氣中哪一種物質的不同形態？',options:['水','空氣','灰塵','陽光'],answer:0,explain:'雲、雨、霧、露水、雪都是「水」在不同條件下（溫度、狀態）呈現出來的樣子，本質上都是水循環的一部分。'},
+  {type:'choice',question:'植物開花後，經過授粉會結出什麼和種子？',options:['果實','花瓣','葉子','根'],answer:0,explain:'植物開花、授粉後，花朵會逐漸發育成「果實」，果實裡面包著種子，這是植物繁衍下一代的重要過程。'},
 ],
 social:[
-  {type:'choice',question:'台灣最高的山是哪一座？',options:['雪山','合歡山','玉山','阿里山'],answer:2},
-  {type:'choice',question:'我們在路上看到行人號誌是紅燈，應該怎麼做？',options:['快速跑過去','停下來等待','先看看再走','繞路走'],answer:1},
-  {type:'choice',question:'農曆新年又叫做什麼？',options:['中秋節','元宵節','春節','清明節'],answer:2},
-  {type:'choice',question:'台灣的首都（行政中心）是哪裡？',options:['台中市','高雄市','台南市','台北市'],answer:3},
-  {type:'choice',question:'下列哪一個職業的人，主要工作是保護我們的安全？',options:['廚師','警察','老師','農夫'],answer:1},
-  {type:'choice',question:'端午節有什麼習俗？',options:['提燈籠','吃湯圓','划龍舟','掃墓'],answer:2},
-  {type:'choice',question:'社區裡的「鄰里長」主要的工作是？',options:['教小朋友讀書','幫助社區居民解決問題','在醫院看病','管理交通'],answer:1},
-  {type:'choice',question:'台灣四面環海，屬於哪種地形類型？',options:['半島','大陸','島嶼','盆地'],answer:2},
-  {type:'choice',question:'清明節的傳統習俗是？',options:['放鞭炮','掃墓祭祖','猜燈謎','吃粽子'],answer:1},
-  {type:'fill',question:'台灣最長的河流是___溪。',answer:'濁水',accept:['濁水溪']},
-  {type:'fill',question:'中秋節吃___是台灣的傳統習俗。',answer:'月餅',accept:['烤肉','月餅和烤肉']},
-  {type:'fill',question:'台灣位於___洲。',answer:'亞',accept:['亞洲']},
-  {type:'fill',question:'學校裡負責教我們知識的人是___。',answer:'老師',accept:['教師','老師們']},
-  {type:'fill',question:'郵差叔叔送的東西叫做___。',answer:'信',accept:['郵件','信件','包裹']},
-  {type:'fill',question:'每年的 10 月 10 日是台灣的___節。',answer:'國慶',accept:['國慶日','雙十國慶']},
+  {type:'choice',question:'台灣最高的山是哪一座？',options:['雪山','合歡山','玉山','阿里山'],answer:2,explain:'玉山海拔3952公尺，是台灣（也是東北亞）最高峰；雪山是台灣第二高峰，阿里山和合歡山則相對較低。'},
+  {type:'choice',question:'我們在路上看到行人號誌是紅燈，應該怎麼做？',options:['快速跑過去','停下來等待','先看看再走','繞路走'],answer:1,explain:'行人紅燈表示禁止通行，為了安全一定要「停下來等待」綠燈才能通過，這是基本的交通安全規則。'},
+  {type:'choice',question:'農曆新年又叫做什麼？',options:['中秋節','元宵節','春節','清明節'],answer:2,explain:'農曆新年又稱「春節」，是農曆一年的開始，是華人最重要的傳統節日，家人會團聚、發紅包、吃年夜飯。'},
+  {type:'choice',question:'台灣的首都（行政中心）是哪裡？',options:['台中市','高雄市','台南市','台北市'],answer:3,explain:'台北市是台灣的政治、行政中心，總統府、行政院等中央政府機關都設在台北市。'},
+  {type:'choice',question:'下列哪一個職業的人，主要工作是保護我們的安全？',options:['廚師','警察','老師','農夫'],answer:1,explain:'警察的職責是維護社會治安、保護人民安全；廚師負責做菜、老師負責教學、農夫負責種植農作物，各行各業都有不同的社會功能。'},
+  {type:'choice',question:'端午節有什麼習俗？',options:['提燈籠','吃湯圓','划龍舟','掃墓'],answer:2,explain:'端午節的傳統習俗是「划龍舟」和吃粽子，紀念屈原投江的故事；提燈籠是元宵節、吃湯圓是冬至或元宵節、掃墓是清明節的習俗。'},
+  {type:'choice',question:'社區裡的「鄰里長」主要的工作是？',options:['教小朋友讀書','幫助社區居民解決問題','在醫院看病','管理交通'],answer:1,explain:'鄰里長是地方自治的基層幹部，負責傳達政令、協助居民解決生活上的問題、辦理社區相關事務。'},
+  {type:'choice',question:'台灣四面環海，屬於哪種地形類型？',options:['半島','大陸','島嶼','盆地'],answer:2,explain:'台灣四周完全被海洋包圍，這種地形稱為「島嶼」；半島是三面臨海、一面連接陸地，大陸是廣闊的陸地，盆地是四周高中間低的地形。'},
+  {type:'choice',question:'清明節的傳統習俗是？',options:['放鞭炮','掃墓祭祖','猜燈謎','吃粽子'],answer:1,explain:'清明節是傳統的祭祖節日，家人會一起去「掃墓」，整理祖先的墓地並祭拜，表達對先人的懷念與尊敬。'},
+  {type:'choice',question:'台灣最長的河流是哪一條？',options:['濁水溪','淡水河','高屏溪','大甲溪'],answer:0,explain:'濁水溪全長約186公里，是台灣最長的河流，發源於中央山脈，流經台灣中部多個縣市。'},
+  {type:'choice',question:'中秋節吃什麼是台灣的傳統習俗？',options:['月餅','粽子','湯圓','年糕'],answer:0,explain:'中秋節有賞月、吃月餅、烤肉的習俗，象徵團圓；粽子是端午節、湯圓是冬至或元宵節、年糕是農曆新年的應景食物。'},
+  {type:'choice',question:'台灣位於哪一個洲？',options:['亞洲','歐洲','美洲','非洲'],answer:0,explain:'台灣位於亞洲東部、太平洋西側，是東亞地區的一個島嶼，鄰近中國大陸、日本、菲律賓等國家。'},
+  {type:'choice',question:'學校裡負責教我們知識的人是誰？',options:['老師','校長','工友','保全'],answer:0,explain:'老師的主要工作是在課堂上教導學生知識與技能；校長負責管理整個學校的行政運作，工友和保全則負責環境維護與安全。'},
+  {type:'choice',question:'郵差叔叔送的東西通常叫做什麼？',options:['信件','貨品','食物','水果'],answer:0,explain:'郵差的主要工作是投遞「信件」和包裹，幫助人們傳遞訊息與物品，是郵政系統重要的一環。'},
+  {type:'choice',question:'每年的 10 月 10 日是台灣的什麼節日？',options:['國慶日','光復節','教師節','兒童節'],answer:0,explain:'10月10日是中華民國的「國慶日」，也稱雙十節，紀念辛亥革命；教師節是9月28日、兒童節是4月4日，要記得區分各個節日的日期。'},
+  {type:'choice',question:'班級裡負責主持班會、處理班務的同學，通常的職位是？',options:['班長','衛生股長','學藝股長','體育股長'],answer:0,explain:'班長是班級的主要負責人，協助老師處理班務、主持班會；衛生股長負責環境清潔、學藝股長負責教室布置與學習活動、體育股長負責體育用品與活動。'},
+  {type:'choice',question:'去商店買東西前，先比較價格和品質再決定要不要買，這種行為叫做什麼？',options:['浪費','理性消費','衝動購物','借錢消費'],answer:1,explain:'事先比較、思考後再決定購買，這種有計畫的消費方式叫「理性消費」；相反地，沒有思考就立刻購買叫「衝動購物」，容易造成浪費。'},
+  {type:'choice',question:'下列哪一項屬於「想要」而不是「需要」？',options:['喝水','穿衣服','買最新款的玩具','吃飯'],answer:2,explain:'「需要」是維持生活基本所必須的（如吃飯、喝水、穿衣），「想要」則是額外、非必要的欲望（如最新款玩具），分清楚兩者有助於做出理性的消費決定。'},
+  {type:'choice',question:'地圖上通常用什麼符號標示「上北下南」的方向？',options:['指北針','圖例','比例尺','等高線'],answer:0,explain:'「指北針」符號標示出地圖上北方的方向，幫助我們判斷其他方位；「圖例」說明地圖上各種符號的意思，「比例尺」表示實際距離與地圖距離的比例。'},
+  {type:'choice',question:'社區裡如果有公共設施損壞，最適當的做法是？',options:['自己想辦法修','視而不見','通報里長或相關單位','在上面塗鴉'],answer:2,explain:'發現公共設施損壞時，應該「通報里長或相關單位」請專業人員處理，這樣才能確保安全並讓問題盡快被解決。'},
+  {type:'choice',question:'班級舉辦活動時，同學們互相幫忙、共同完成任務，這種精神叫做什麼合作？',options:['團隊','單獨','競爭','比賽'],answer:0,explain:'大家一起分工、互相幫助完成共同目標，這種精神叫做「團隊合作」，是班級生活和未來社會生活都很重要的能力。'},
+  {type:'choice',question:'認識自己居住地方的地址，通常包含縣市、鄉鎮市區和下列哪一項？',options:['路名','人口數','面積','緯度'],answer:0,explain:'完整的地址通常包含「縣市、鄉鎮市區、路名、巷弄號」等資訊，記住自己家的完整地址在緊急聯絡時非常重要。'},
 ],
 };
 
-// Minecraft-flavored chance events ("寶箱事件")
-const CHANCE_EVENTS = [
-  {text:'💎 你挖到一塊鑽石！幸運值UP，前進 2 格！',move:2},
-  {text:'🕳️ 你掉進地洞了，摸黑爬出來花了好久，原地不動一回合！',move:0,skip:true},
-  {text:'🍀 你踩到四葉幸運草，村民送你傳送卷軸，前進 3 格！',move:3},
-  {text:'🧟 半夜被殭屍偷襲，你嚇得後退 2 格！',move:-2},
-  {text:'⭐ 你成功馴服一隻狼當夥伴，獎勵前進 1 格！',move:1},
-  {text:'🐌 你踩到史萊姆，黏住了，後退 1 格！',move:-1},
-  {text:'🛏️ 你太累了，决定先睡覺等明天，原地不動一回合！',move:0,skip:true},
-  {text:'⚡ 你被閃電擊中變身超人模式，連續前進 4 格！',move:4},
+const SUBJECT_TYPES = [
+  {id:'chinese', emoji:'🌱', name:'國語'},
+  {id:'math',    emoji:'⛏️', name:'數學'},
+  {id:'science', emoji:'🪵', name:'自然'},
+  {id:'social',  emoji:'🏖️', name:'社會'},
 ];
 
-const SUBJECT_TYPES = [
-  {id:'chinese', emoji:'🌱', name:'國語', cls:'type-chinese'},
-  {id:'math',    emoji:'⛏️', name:'數學', cls:'type-math'},
-  {id:'science', emoji:'🪵', name:'自然', cls:'type-science'},
-  {id:'social',  emoji:'🏖️', name:'社會', cls:'type-social'},
-];
+const MOB_BY_SUBJECT = {
+  chinese: {emoji:'🧟', name:'殭屍'},
+  math:    {emoji:'💀', name:'骷髏'},
+  science: {emoji:'🕷️', name:'蜘蛛'},
+  social:  {emoji:'🧌', name:'地獄人'},
+};
 
 const TOKEN_COLORS = ['#5C9E31','#A8231F','#4FC3D9','#E8B339'];
 const TOKEN_EMOJI  = ['🧑‍🌾','🧝','🥷','🧙'];
 const MAX_HEARTS = 5;
+const MAZE_SIZE = 8;
+const NUM_MONSTERS = 16; // monster cells scattered through the maze
 
 // ═══════════════════════════════════════════════════
 //  8-bit Sound Engine (Web Audio API, no audio files)
@@ -593,107 +544,54 @@ let bgmTimer = null;
 let bgmStep = 0;
 
 function getAudioCtx(){
-  if(!audioCtx){
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   if(audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
-
-// Play a single square-wave beep (classic 8-bit tone)
 function beep(freq, duration, type='square', vol=0.15, delay=0){
   if(!soundEnabled) return;
   try{
     const ctx = getAudioCtx();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.value = vol;
-    osc.connect(gain);
-    gain.connect(ctx.destination);
+    osc.type = type; osc.frequency.value = freq; gain.gain.value = vol;
+    osc.connect(gain); gain.connect(ctx.destination);
     const startAt = ctx.currentTime + delay;
     gain.gain.setValueAtTime(vol, startAt);
     gain.gain.exponentialRampToValueAtTime(0.001, startAt + duration);
-    osc.start(startAt);
-    osc.stop(startAt + duration);
-  }catch(e){ /* audio not available, fail silently */ }
+    osc.start(startAt); osc.stop(startAt + duration);
+  }catch(e){}
 }
+function sfxStep(){ beep(140+Math.random()*40, 0.05, 'square', 0.06, 0); }
+function sfxBump(){ beep(90, 0.08, 'sawtooth', 0.08, 0); }
+function sfxCorrect(){ beep(523,0.1,'square',0.14,0); beep(659,0.1,'square',0.14,0.1); beep(784,0.16,'square',0.16,0.2); }
+function sfxWrong(){ beep(220,0.18,'sawtooth',0.13,0); beep(165,0.22,'sawtooth',0.13,0.12); }
+function sfxChest(){ beep(440,0.08,'square',0.12,0); beep(587,0.08,'square',0.12,0.08); beep(880,0.14,'square',0.14,0.16); }
+function sfxClick(){ beep(660,0.05,'square',0.08,0); }
+function sfxVictory(){ [523,659,784,1047].forEach((f,i)=> beep(f,0.18,'square',0.15,i*0.14)); }
 
-// ---- Sound effect presets ----
-function sfxDiceRoll(){
-  for(let i=0;i<4;i++) beep(180+Math.random()*220, 0.06, 'square', 0.08, i*0.07);
-}
-function sfxCorrect(){
-  beep(523, 0.1, 'square', 0.14, 0);
-  beep(659, 0.1, 'square', 0.14, 0.1);
-  beep(784, 0.16, 'square', 0.16, 0.2);
-}
-function sfxWrong(){
-  beep(220, 0.18, 'sawtooth', 0.13, 0);
-  beep(165, 0.22, 'sawtooth', 0.13, 0.12);
-}
-function sfxChest(){
-  beep(440, 0.08, 'square', 0.12, 0);
-  beep(587, 0.08, 'square', 0.12, 0.08);
-  beep(880, 0.14, 'square', 0.14, 0.16);
-}
-function sfxStep(){
-  beep(110+Math.random()*40, 0.05, 'square', 0.06, 0);
-}
-function sfxPortal(){
-  for(let i=0;i<6;i++) beep(300+i*80, 0.07, 'sine', 0.1, i*0.05);
-}
-function sfxClick(){
-  beep(660, 0.05, 'square', 0.08, 0);
-}
-function sfxVictory(){
-  [523,659,784,1047].forEach((f,i)=> beep(f, 0.18, 'square', 0.15, i*0.14));
-}
-
-// ---- 8-bit background music loop (simple looping melody) ----
-const BGM_MELODY = [
-  // [frequency, duration in steps]
-  392,0,440,0,494,0,440,0,392,0,330,0,392,0,0,0,
-  440,0,494,0,523,0,494,0,440,0,392,0,330,0,0,0,
-];
-const BGM_BASS = [
-  196,0,0,0,196,0,0,0,165,0,0,0,196,0,0,0,
-  220,0,0,0,220,0,0,0,196,0,0,0,165,0,0,0,
-];
-const BGM_STEP_TIME = 0.18;
-
+const BGM_MELODY=[392,0,440,0,494,0,440,0,392,0,330,0,392,0,0,0,440,0,494,0,523,0,494,0,440,0,392,0,330,0,0,0];
+const BGM_BASS=[196,0,0,0,196,0,0,0,165,0,0,0,196,0,0,0,220,0,0,0,220,0,0,0,196,0,0,0,165,0,0,0];
+const BGM_STEP_TIME=0.18;
 function startBGM(){
   if(!soundEnabled) return;
-  stopBGM();
-  bgmStep = 0;
-  const ctx = getAudioCtx();
+  stopBGM(); bgmStep=0;
+  getAudioCtx();
   bgmTimer = setInterval(()=>{
     if(!soundEnabled) return;
-    const note = BGM_MELODY[bgmStep % BGM_MELODY.length];
-    const bass = BGM_BASS[bgmStep % BGM_BASS.length];
-    if(note) beep(note, BGM_STEP_TIME*0.85, 'square', 0.045, 0);
-    if(bass) beep(bass, BGM_STEP_TIME*0.9, 'triangle', 0.05, 0);
+    const note=BGM_MELODY[bgmStep%BGM_MELODY.length], bass=BGM_BASS[bgmStep%BGM_BASS.length];
+    if(note) beep(note, BGM_STEP_TIME*0.85,'square',0.045,0);
+    if(bass) beep(bass, BGM_STEP_TIME*0.9,'triangle',0.05,0);
     bgmStep++;
   }, BGM_STEP_TIME*1000);
 }
-function stopBGM(){
-  if(bgmTimer){ clearInterval(bgmTimer); bgmTimer = null; }
-}
-
+function stopBGM(){ if(bgmTimer){clearInterval(bgmTimer); bgmTimer=null;} }
 function toggleSound(){
   soundEnabled = !soundEnabled;
   const btn = document.getElementById('soundToggleBtn');
   if(btn) btn.textContent = soundEnabled ? '🔊' : '🔇';
-  if(soundEnabled){
-    getAudioCtx();
-    startBGM();
-  } else {
-    stopBGM();
-  }
+  if(soundEnabled){ getAudioCtx(); startBGM(); } else { stopBGM(); }
 }
-
-// Unlock audio context + start BGM on first user interaction (browser autoplay policy)
 let audioUnlocked = false;
 function unlockAudioOnce(){
   if(audioUnlocked) return;
@@ -705,14 +603,14 @@ document.addEventListener('click', unlockAudioOnce, {once:true});
 
 // ---------- State ----------
 let playerCount = 2;
-let totalRounds = 2;
-let players = []; // {name, color, emoji, pos, correct, wrong, hearts, xp, lapsCompleted, skipTurn}
+let players = []; // {name,color,emoji,r,c,hearts,xp,correct,wrong}
 let currentPlayerIdx = 0;
-let boardCells = [];
+let maze = []; // grid of {top,right,bottom,left}
+let monsterCells = []; // [{r,c,subject,defeated}]
+let chestCell = {r:MAZE_SIZE-1, c:MAZE_SIZE-1};
 let usedQuestions = {chinese:[],math:[],science:[],social:[]};
 let gameOver = false;
-
-const BOARD_SIZE = 28; // perimeter of an 8x8 grid
+let inBattle = false; // locks movement while a question modal is open
 
 function shuffle(arr){return arr.slice().sort(()=>Math.random()-.5);}
 
@@ -723,12 +621,6 @@ function setPlayerCount(n){
     p.classList.toggle('active', Number(p.dataset.val)===n);
   });
   renderNameInputs();
-}
-function setRounds(n){
-  totalRounds = n;
-  document.querySelectorAll('#roundPills .pill').forEach(p=>{
-    p.classList.toggle('active', Number(p.dataset.val)===n);
-  });
 }
 function renderNameInputs(){
   const list = document.getElementById('playerNameList');
@@ -742,37 +634,54 @@ function renderNameInputs(){
   }
   list.innerHTML = html;
 }
-
 setPlayerCount(2);
-setRounds(2);
 
-// ---------- Board generation ----------
-function generateBoard(){
-  const cells = new Array(BOARD_SIZE);
-  cells[0] = {type:'start'};
-  const specialMap = {
-    4:'chance', 8:'rest', 12:'portal', 16:'chance', 20:'rest', 24:'portal', 27:'chance'
-  };
-  const subjCycle = shuffle(['chinese','math','science','social']);
-  let subjPointer = 0;
-  for(let i=1;i<BOARD_SIZE;i++){
-    if(specialMap[i]){
-      cells[i] = {type: specialMap[i]};
-    } else {
-      const subj = subjCycle[subjPointer % subjCycle.length];
-      subjPointer++;
-      cells[i] = {type:'subject', subject: subj};
+// ---------- Maze generation (recursive backtracker, guaranteed solvable) ----------
+function generateMaze(size){
+  const cells = [];
+  for(let r=0;r<size;r++){
+    cells.push([]);
+    for(let c=0;c<size;c++){
+      cells[r].push({top:true,right:true,bottom:true,left:true,visited:false});
     }
   }
+  function carve(r,c){
+    cells[r][c].visited = true;
+    const dirs = shuffle([
+      {dr:-1,dc:0,wall:'top',opp:'bottom'},
+      {dr:1,dc:0,wall:'bottom',opp:'top'},
+      {dr:0,dc:-1,wall:'left',opp:'right'},
+      {dr:0,dc:1,wall:'right',opp:'left'},
+    ]);
+    for(const d of dirs){
+      const nr=r+d.dr, nc=c+d.dc;
+      if(nr>=0&&nr<size&&nc>=0&&nc<size&&!cells[nr][nc].visited){
+        cells[r][c][d.wall]=false;
+        cells[nr][nc][d.opp]=false;
+        carve(nr,nc);
+      }
+    }
+  }
+  carve(0,0);
   return cells;
 }
 
-function ringPosToRowCol(idx){
-  // 8x8 grid perimeter, 28 cells total, clockwise from top-left.
-  if(idx <= 7) return {row:0, col:idx};
-  if(idx <= 13) return {row: idx-7, col:7};
-  if(idx <= 21) return {row:7, col: 7-(idx-14)};
-  return {row: 7-(idx-21), col:0}; // idx 22-27: left col, bottom-up
+function placeMonsters(size, count){
+  const subjCycle = shuffle(['chinese','math','science','social']);
+  const cells = [];
+  const taken = new Set(['0,0', `${size-1},${size-1}`]); // avoid start & chest cell
+  let attempts = 0;
+  while(cells.length < count && attempts < 500){
+    attempts++;
+    const r = Math.floor(Math.random()*size);
+    const c = Math.floor(Math.random()*size);
+    const key = `${r},${c}`;
+    if(taken.has(key)) continue;
+    taken.add(key);
+    const subject = subjCycle[cells.length % subjCycle.length];
+    cells.push({r,c,subject,defeated:false});
+  }
+  return cells;
 }
 
 // ---------- Game start ----------
@@ -785,20 +694,21 @@ function startGame(){
     const name = (nameInput.value || ('玩家'+(i+1))).trim();
     players.push({
       name, color: TOKEN_COLORS[i], emoji: TOKEN_EMOJI[i],
-      pos: 0, correct:0, wrong:0, hearts: MAX_HEARTS, xp:0,
-      lapsCompleted:0, skipTurn:false
+      r:0, c:0, hearts: MAX_HEARTS, xp:0, correct:0, wrong:0
     });
   }
   currentPlayerIdx = 0;
   gameOver = false;
   usedQuestions = {chinese:[],math:[],science:[],social:[]};
-  boardCells = generateBoard();
+  maze = generateMaze(MAZE_SIZE);
+  monsterCells = placeMonsters(MAZE_SIZE, NUM_MONSTERS);
+  chestCell = {r:MAZE_SIZE-1, c:MAZE_SIZE-1};
 
   document.getElementById('setupScreen').classList.add('hidden');
   document.getElementById('gameScreen').classList.remove('hidden');
 
-  renderGameTop();
-  renderBoard();
+  renderScoreboard();
+  renderMaze();
   updateTurnLabel();
 }
 
@@ -809,162 +719,144 @@ function heartsDisplay(p){
   return h;
 }
 
-function renderGameTop(){
-  const top = document.getElementById('gameTop');
-  top.innerHTML = players.map((p,i)=>`
-    <div class="player-chip ${i===currentPlayerIdx?'current':''}">
-      <div class="chip-top">
+function renderScoreboard(){
+  const board = document.getElementById('scoreboard');
+  const remaining = monsterCells.filter(m=>!m.defeated).length;
+  let html = `<div class="scoreboard-title">⚔️ 冒險者紀錄</div>`;
+  html += players.map((p,i)=>`
+    <div class="player-card ${i===currentPlayerIdx?'current':''}">
+      <div class="pc-top">
         <div class="tok" style="background:${p.color}">${p.emoji}</div>
         <span class="pname">${p.name}</span>
       </div>
-      <div class="chip-bottom">
-        <span class="hearts">${heartsDisplay(p)}</span>
-        <span class="xp">⭐${p.xp}</span>
-      </div>
+      <span class="hearts">${heartsDisplay(p)}</span>
+      <span class="xp">⭐ ${p.xp} 經驗值</span>
+      <div class="turn-badge">▶ 輪到我了！</div>
     </div>
   `).join('');
-  document.getElementById('roundBanner').textContent =
-    `⛏️ 第 ${players[0].lapsCompleted+1} / ${totalRounds} 輪 ⛏️`;
+  html += `<div class="progress-box" id="progressBox">🗡️ 剩餘怪物：<strong>${remaining}</strong> / ${monsterCells.length}<br>📦 找到寶箱即可通關！</div>`;
+  board.innerHTML = html;
 }
 
-function cellTypeInfo(cell){
-  if(cell.type==='start') return {emoji:'🛠️', label:'工作台', cls:'type-start'};
-  if(cell.type==='chance') return {emoji:'📦', label:'寶箱', cls:'type-chance'};
-  if(cell.type==='rest') return {emoji:'🛏️', label:'床', cls:'type-rest'};
-  if(cell.type==='portal') return {emoji:'🌀', label:'終界門', cls:'type-portal'};
-  if(cell.type==='subject'){
-    const s = SUBJECT_TYPES.find(x=>x.id===cell.subject);
-    return {emoji:s.emoji, label:s.name, cls:s.cls};
-  }
-  return {emoji:'', label:'', cls:''};
+function cellAt(r,c){
+  if(r===chestCell.r && c===chestCell.c) return {type:'chest'};
+  const m = monsterCells.find(m=>m.r===r && m.c===c && !m.defeated);
+  if(m) return {type:'monster', subject:m.subject, monster:m};
+  if(r===0 && c===0) return {type:'start'};
+  return {type:'floor'};
 }
 
-function renderBoard(){
-  const board = document.getElementById('board');
-  const grid = Array.from({length:8}, ()=>Array(8).fill(null));
-  for(let idx=0; idx<boardCells.length; idx++){
-    const {row,col} = ringPosToRowCol(idx);
-    grid[row][col] = idx;
-  }
+function renderMaze(){
+  const grid = document.getElementById('mazeGrid');
+  grid.style.gridTemplateColumns = `repeat(${MAZE_SIZE}, 1fr)`;
+  grid.style.gridTemplateRows = `repeat(${MAZE_SIZE}, 1fr)`;
 
   let html = '';
-  for(let r=0;r<8;r++){
-    for(let c=0;c<8;c++){
-      const idx = grid[r][c];
-      if(idx===null){
-        html += `<div class="cell empty"></div>`;
-        continue;
+  for(let r=0;r<MAZE_SIZE;r++){
+    for(let c=0;c<MAZE_SIZE;c++){
+      const cell = maze[r][c];
+      const shadows = [];
+      if(cell.top) shadows.push('inset 0 3px 0 0 var(--wood-dark)');
+      if(cell.right) shadows.push('inset -3px 0 0 0 var(--wood-dark)');
+      if(cell.bottom) shadows.push('inset 0 -3px 0 0 var(--wood-dark)');
+      if(cell.left) shadows.push('inset 3px 0 0 0 var(--wood-dark)');
+      const info = cellAt(r,c);
+      let icon = '';
+      if(info.type==='chest') icon = '📦';
+      else if(info.type==='monster') icon = MOB_BY_SUBJECT[info.subject].emoji;
+      else if(info.type==='start') icon = '🛠️';
+
+      const playersOnCell = players.filter(p => p.r===r && p.c===c);
+      const offsets = [
+        {top:'50%',left:'50%'},          // 1 player: centered
+        {top:'35%',left:'35%'},          // 2 players: top-left / bottom-right
+        {top:'65%',left:'65%'},
+        {top:'30%',left:'70%'},          // 3rd: top-right
+        {top:'70%',left:'30%'},          // 4th: bottom-left
+      ];
+      let playersHere = '';
+      if(playersOnCell.length === 1){
+        const p = playersOnCell[0];
+        const pi = players.indexOf(p);
+        playersHere = `<span class="player-marker" style="z-index:${pi+1};top:50%;left:50%;transform:translate(-50%,-50%);">${p.emoji}</span>`;
+      } else if(playersOnCell.length > 1){
+        playersHere = playersOnCell.map((p,idx)=>{
+          const pi = players.indexOf(p);
+          const off = idx===0 ? {top:'35%',left:'35%'} : idx===1 ? {top:'65%',left:'65%'} : idx===2 ? {top:'30%',left:'70%'} : {top:'70%',left:'30%'};
+          return `<span class="player-marker multi" style="z-index:${pi+1};top:${off.top};left:${off.left};transform:translate(-50%,-50%);">${p.emoji}</span>`;
+        }).join('');
       }
-      const cell = boardCells[idx];
-      const info = cellTypeInfo(cell);
-      const tokensHere = players
-        .map((p,pi)=> p.pos===idx ? `<div class="mini-tok">${p.emoji}</div>` : '')
-        .join('');
-      html += `<div class="cell ${info.cls}">
-        <div class="cell-emoji">${info.emoji}</div>
-        <div class="tokens-on-cell">${tokensHere}</div>
+
+      html += `<div class="maze-cell" style="box-shadow:${shadows.join(',')||'none'}">
+        ${icon ? `<span class="cell-icon">${icon}</span>` : ''}
+        ${playersHere}
       </div>`;
     }
   }
-  board.innerHTML = html;
+  grid.innerHTML = html;
 }
 
 function updateTurnLabel(){
   const p = players[currentPlayerIdx];
-  document.getElementById('turnLabel').innerHTML = `輪到 <strong style="color:${p.color}">${p.emoji} ${p.name}</strong> 出發冒險！`;
-  document.getElementById('rollBtn').disabled = false;
-  document.getElementById('diceDisplay').textContent = '🎲';
+  document.getElementById('turnLabel').innerHTML = `輪到 <strong style="color:${p.color}">${p.emoji} ${p.name}</strong> 探險！用方向鍵移動`;
 }
 
-// ---------- Dice & movement ----------
-function rollDice(){
+// ---------- Movement ----------
+function movePlayer(dc, dr){
+  if(gameOver || inBattle) return;
   unlockAudioOnce();
-  document.getElementById('rollBtn').disabled = true;
-  const diceEl = document.getElementById('diceDisplay');
-  diceEl.classList.add('rolling');
-  sfxDiceRoll();
-
-  let ticks = 0;
-  const ticker = setInterval(()=>{
-    diceEl.textContent = String(1+Math.floor(Math.random()*6));
-    sfxStep();
-    ticks++;
-    if(ticks>8){
-      clearInterval(ticker);
-      diceEl.classList.remove('rolling');
-      const roll = 1+Math.floor(Math.random()*6);
-      diceEl.textContent = roll;
-      setTimeout(()=> movePlayer(roll), 400);
-    }
-  }, 70);
-}
-
-function movePlayer(steps){
   const p = players[currentPlayerIdx];
-  let newPos = p.pos + steps;
-  if(newPos >= BOARD_SIZE){
-    newPos = newPos % BOARD_SIZE;
-    p.lapsCompleted++;
+  const cell = maze[p.r][p.c];
+
+  // check wall blocking
+  let blocked = false;
+  if(dr===-1 && cell.top) blocked = true;
+  if(dr===1 && cell.bottom) blocked = true;
+  if(dc===-1 && cell.left) blocked = true;
+  if(dc===1 && cell.right) blocked = true;
+
+  if(blocked){
+    sfxBump();
+    return;
   }
-  p.pos = newPos;
-  renderBoard();
-  renderGameTop();
-  setTimeout(()=> triggerCell(), 300);
+
+  const nr = p.r + dr;
+  const nc = p.c + dc;
+  if(nr<0||nr>=MAZE_SIZE||nc<0||nc>=MAZE_SIZE) return;
+
+  sfxStep();
+  p.r = nr; p.c = nc;
+  renderMaze();
+  setTimeout(()=> triggerCell(), 150);
 }
 
 function triggerCell(){
+  inBattle = true;
+  setDpadEnabled(false);
   const p = players[currentPlayerIdx];
-  const cell = boardCells[p.pos];
+  const info = cellAt(p.r, p.c);
 
-  if(cell.type==='start'){
-    showModalSimple('🛠️','回到工作台','你回到工作台補充裝備，準備繼續冒險！','info', ()=>endTurn());
-  } else if(cell.type==='subject'){
-    showQuestionModal(cell.subject);
-  } else if(cell.type==='chance'){
-    triggerChance();
-  } else if(cell.type==='rest'){
-    showModalSimple('🛏️','睡覺休息','你躺上床睡了一覺，安全度過夜晚！','info', ()=>endTurn());
-  } else if(cell.type==='portal'){
-    triggerPortal();
+  if(info.type === 'chest'){
+    sfxChest();
+    showModalSimple('📦','找到寶箱！','太棒了！這個寶箱裡裝滿了金幣和裝備！','info', ()=>{
+      checkVictory(p);
+    });
+  } else if(info.type === 'monster'){
+    showQuestionModal(info.monster);
+  } else {
+    inBattle = false;
+    endTurn();
   }
 }
 
-function triggerChance(){
-  sfxChest();
-  const ev = CHANCE_EVENTS[Math.floor(Math.random()*CHANCE_EVENTS.length)];
-  const p = players[currentPlayerIdx];
-  showModalSimple('📦','打開寶箱', ev.text, 'info', ()=>{
-    if(ev.move !== 0){
-      let np = p.pos + ev.move;
-      if(np < 0) np = 0;
-      if(np >= BOARD_SIZE) np = np % BOARD_SIZE;
-      p.pos = np;
-      renderBoard(); renderGameTop();
-    }
-    endTurn();
-  });
-}
-
-function triggerPortal(){
-  sfxPortal();
-  const p = players[currentPlayerIdx];
-  const subjIndices = boardCells.map((c,i)=>c.type==='subject'?i:null).filter(x=>x!==null);
-  const dest = subjIndices[Math.floor(Math.random()*subjIndices.length)];
-  showModalSimple('🌀','終界傳送門','一陣紫色光芒閃過，你被傳送到未知領域，怪物正在等你！','info', ()=>{
-    p.pos = dest;
-    renderBoard(); renderGameTop();
-    setTimeout(()=> triggerCell(), 200);
-  });
-}
-
-// ---------- Modals ----------
+// ---------- Battle Modal ----------
 function showModalSimple(emoji, title, text, kind, onClose){
   const overlay = document.getElementById('modalOverlay');
   const card = document.getElementById('modalCard');
   card.innerHTML = `
     <div class="modal-tag" style="background:#6B6B6B;">${emoji} ${title}</div>
     <div class="modal-q">${text}</div>
-    <button class="modal-btn" id="modalCloseBtn">繼續冒險 →</button>
+    <button class="modal-btn" id="modalCloseBtn">繼續 →</button>
   `;
   overlay.classList.remove('hidden');
   document.getElementById('modalCloseBtn').onclick = ()=>{
@@ -983,15 +875,8 @@ function getNextQuestion(subject){
   return bank[pickIdx];
 }
 
-// Mob flavor per subject for the "battle" framing
-const MOB_BY_SUBJECT = {
-  chinese: {emoji:'🧟', name:'殭屍'},
-  math:    {emoji:'💀', name:'骷髏'},
-  science: {emoji:'🕷️', name:'蜘蛛'},
-  social:  {emoji:'🧌', name:'地獄人'},
-};
-
-function showQuestionModal(subject){
+function showQuestionModal(monster){
+  const subject = monster.subject;
   const q = getNextQuestion(subject);
   const subjInfo = SUBJECT_TYPES.find(s=>s.id===subject);
   const mob = MOB_BY_SUBJECT[subject];
@@ -1008,7 +893,7 @@ function showQuestionModal(subject){
   }
 
   card.innerHTML = `
-    <div class="modal-tag ${subjInfo.cls}">${mob.emoji} ${mob.name}出現了！（${subjInfo.name}題）</div>
+    <div class="modal-tag type-${subject}">${mob.emoji} ${mob.name}出現了！（${subjInfo.name}題）</div>
     <div class="modal-q">${q.question}</div>
     ${q.hint ? `<div class="modal-hint">💡 ${q.hint}</div>` : ''}
     ${bodyHtml}
@@ -1018,6 +903,7 @@ function showQuestionModal(subject){
 
   window.__currentModalQ = q;
   window.__currentModalSelected = null;
+  window.__currentModalMonster = monster;
 }
 
 function selectModalOption(i){
@@ -1044,10 +930,11 @@ function isAnsCorrect(q, ans){
 function submitModalAnswer(){
   const q = window.__currentModalQ;
   const ans = window.__currentModalSelected;
+  const monster = window.__currentModalMonster;
   const ok = isAnsCorrect(q, ans);
   const p = players[currentPlayerIdx];
 
-  if(ok){ p.correct++; p.xp += 10; sfxCorrect(); }
+  if(ok){ p.correct++; p.xp += 10; sfxCorrect(); monster.defeated = true; }
   else{ p.wrong++; p.hearts = Math.max(0, p.hearts-1); sfxWrong(); }
 
   if(q.type==='choice'){
@@ -1066,25 +953,28 @@ function submitModalAnswer(){
   const fb = document.createElement('div');
   fb.className = 'modal-feedback ' + (ok?'ok':'bad');
   fb.innerHTML = ok
-    ? '⚔️ 攻擊成功！怪物被消滅了，獲得 10 經驗值，前進 1 格！'
+    ? '⚔️ 攻擊成功！怪物被消滅了，獲得 10 經驗值！'
     : `💥 攻擊失誤，被怪物反擊扣 1 顆愛心！正確答案是：<strong>${q.type==='choice'?q.options[q.answer]:q.answer}</strong>`;
   const submitBtn = document.getElementById('modalSubmitBtn');
   submitBtn.parentNode.insertBefore(fb, submitBtn);
-  submitBtn.textContent = '繼續冒險 →';
+
+  if(!ok && q.explain){
+    const teach = document.createElement('div');
+    teach.className = 'modal-teach';
+    teach.innerHTML = `<span class="teach-label">📖 小教室</span>${q.explain}`;
+    submitBtn.parentNode.insertBefore(teach, submitBtn);
+  }
+
+  submitBtn.textContent = '繼續探險 →';
   submitBtn.disabled = false;
   submitBtn.onclick = ()=>{
     document.getElementById('modalOverlay').classList.add('hidden');
-    renderGameTop();
-    if(ok){
-      let np = p.pos + 1;
-      if(np >= BOARD_SIZE){ np = np % BOARD_SIZE; p.lapsCompleted++; }
-      p.pos = np;
-      renderBoard(); renderGameTop();
-    }
+    renderScoreboard();
+    renderMaze();
     if(p.hearts <= 0){
-      showModalSimple('💔', p.name+' 愛心歸零！','別擔心，怪物只是把你嚇跑，愛心會在下個工作台補滿！稍後繼續挑戰！','info', ()=>{
+      showModalSimple('💔', p.name+' 愛心歸零！','別擔心，怪物只是把你嚇跑，愛心會補滿，稍後繼續挑戰！','info', ()=>{
         p.hearts = MAX_HEARTS;
-        renderGameTop();
+        renderScoreboard();
         endTurn();
       });
     } else {
@@ -1093,27 +983,33 @@ function submitModalAnswer(){
   };
 }
 
-// ---------- Turn management ----------
-function endTurn(){
-  const finisher = players.find(p=>p.lapsCompleted >= totalRounds);
-  if(finisher){
+// ---------- Victory check ----------
+function checkVictory(p){
+  const remaining = monsterCells.filter(m=>!m.defeated).length;
+  if(remaining === 0){
     gameOver = true;
     showResults();
-    return;
-  }
-  currentPlayerIdx = (currentPlayerIdx+1) % players.length;
-  const next = players[currentPlayerIdx];
-  if(next.skipTurn){
-    next.skipTurn = false;
-    showModalSimple('💤', next.name+' 在睡覺','上一輪的休息效果，這次跳過！', 'info', ()=>{
-      currentPlayerIdx = (currentPlayerIdx+1) % players.length;
-      renderGameTop();
-      updateTurnLabel();
+  } else {
+    showModalSimple('⚠️','寶箱被鎖住了！',`還有 ${remaining} 隻怪物潛伏在迷宮裡，必須先消滅所有怪物才能打開寶箱！`,'info', ()=>{
+      endTurn();
     });
-    return;
   }
-  renderGameTop();
+}
+
+// ---------- Turn management ----------
+function endTurn(){
+  inBattle = false;
+  setDpadEnabled(true);
+  if(gameOver) return;
+  currentPlayerIdx = (currentPlayerIdx+1) % players.length;
+  renderScoreboard();
   updateTurnLabel();
+}
+
+function setDpadEnabled(enabled){
+  document.querySelectorAll('.dpad-btn:not(.dpad-center)').forEach(btn=>{
+    btn.disabled = !enabled;
+  });
 }
 
 // ---------- Results ----------
@@ -1123,12 +1019,9 @@ function showResults(){
   document.getElementById('gameScreen').classList.add('hidden');
   document.getElementById('resultScreen').classList.remove('hidden');
 
-  const ranked = players.slice().sort((a,b)=>{
-    if(b.lapsCompleted !== a.lapsCompleted) return b.lapsCompleted - a.lapsCompleted;
-    return b.xp - a.xp;
-  });
+  const ranked = players.slice().sort((a,b)=> b.xp - a.xp);
 
-  document.getElementById('winnerName').textContent = `🎉 ${ranked[0].emoji} ${ranked[0].name} 勝利！`;
+  document.getElementById('winnerName').textContent = `🎉 全員通關！最佳冒險者：${ranked[0].emoji} ${ranked[0].name}`;
 
   const medals = ['🥇','🥈','🥉','🏅'];
   document.getElementById('resultList').innerHTML = ranked.map((p,i)=>`
@@ -1136,10 +1029,20 @@ function showResults(){
       <div class="rank">${medals[i]||''}</div>
       <div class="rtok" style="background:${p.color}">${p.emoji}</div>
       <div class="rname">${p.name}</div>
-      <div class="rstats">完成 ${p.lapsCompleted} 輪・⭐${p.xp} 經驗值<br><strong>⚔️${p.correct} 勝</strong> / 💥${p.wrong} 敗</div>
+      <div class="rstats">⭐${p.xp} 經驗值<br><strong>⚔️${p.correct} 勝</strong> / 💥${p.wrong} 敗</div>
     </div>
   `).join('');
 }
+
+// ---------- Keyboard support (desktop convenience) ----------
+document.addEventListener('keydown', (e)=>{
+  if(document.getElementById('gameScreen').classList.contains('hidden')) return;
+  if(!document.getElementById('modalOverlay').classList.contains('hidden')) return;
+  if(e.key==='ArrowUp') movePlayer(0,-1);
+  else if(e.key==='ArrowDown') movePlayer(0,1);
+  else if(e.key==='ArrowLeft') movePlayer(-1,0);
+  else if(e.key==='ArrowRight') movePlayer(1,0);
+});
 
 </script>
 </body>
